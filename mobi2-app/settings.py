@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", '+6)5rt0w6*+je7-r4^lfmgnj1(z$-wy9r&dai
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = ["https://mobi-back.herokuapp.com/", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]  # David Goodenough
 
 
 # Application definition
@@ -58,8 +58,7 @@ ROOT_URLCONF = 'mobi2-app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
