@@ -3,8 +3,12 @@
 import os
 import sys
 
+import dotenv
+
 
 def main():
+    dotenv.read_dotenv()  # Read envvar from .env file
+
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mobi2-app.settings')
     try:
