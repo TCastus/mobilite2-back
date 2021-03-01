@@ -25,9 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", '+6)5rt0w6*+je7-r4^lfmgnj1(z$-wy9r&daic98q(*5wic%#&')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
+# Get the DEBUG environment variable, debug is only activated when True
+DEBUG = ('True' == os.environ.get('APP_DEBUG', False))
 
-ALLOWED_HOSTS = ["*"]  # David Goodenough
+ALLOWED_HOSTS = ["*"]  # David Goodenough...
 
 
 # Application definition
@@ -38,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'mobi',
     'django.contrib.staticfiles',
+    'mobi',  # Our app
+    'corsheaders',  # Resolve CORS problems
+    'rest_framework',  # Django REST framework
+    'debug_toolbar'  # Django debug toolbar
 ]
 
 MIDDLEWARE = [
@@ -47,11 +51,32 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files in prod mode
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug toolbar
+    'corsheaders.middleware.CorsMiddleware'  # CORS Stuff
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:8000',
+)
+
+# Config for debug toolbar
+INTERNAL_IPS = [
+    '127.0.0.1',
+    'localhost'
+]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'  # Shall be modified someday
+    ]
+}
 
 ROOT_URLCONF = 'mobi2-app.urls'
 
@@ -108,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -124,3 +149,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+MOBI_APP = {
+    'version': "in-dev",
+    'name': "Mobilité",
+    'repo': "https://github.com/TCastus/mobilite2-back"
+}
