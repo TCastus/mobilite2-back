@@ -18,3 +18,27 @@ DEPARTEMENTINSA = (
     ("SGM", "Science et Génie Matériaux"),
     ("TC", "Télécommunications, Services et Usages"),
 )
+
+CONTRACTS = (
+    ('DD', 'Double Diplôme'),
+    ('E', 'Echange'),
+    ('X', 'Inconnu')
+)
+
+PERIOD = (
+    ('Hebdo', 'Hebdomadaire'),
+    ('Mensuel', 'Mensuel'),
+    ('Trim', 'Trimestriel'),
+    ('Sem', 'Semestriel'),
+    ('An', 'Annuel')
+)
+
+YEAR = (
+    ('3A', '3A'),
+    ('4A', '4A')
+)
+
+LANGUAGES = (
+    ('TOEIC', 'TOEIC'),
+    ('INC', 'INCONNU')
+)

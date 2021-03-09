@@ -12,7 +12,7 @@ class Country(models.Model):
     ECTSConversion = models.FloatField(default=0)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} in {self.continent}"
 
 
 class City(models.Model):
@@ -51,22 +51,44 @@ class University(models.Model):
     )
 
     review_rank = models.DecimalField(max_digits=2, decimal_places=1, default=0)
-    CWUR_rank = models.IntegerField(null=True, blank=True)
+    cwur_rank = models.IntegerField(null=True, blank=True)
 
-    Department_availability = models.ManyToManyField('DepartementINSA')
+    department_availability = models.ManyToManyField('DepartementINSA')
+    
+    contract_type = models.CharField(max_length=100, choices=CONTRACTS, default='X')
+
+    def __str__(self):
+        return f"{self.name} \nAvailable for {self.department_availability} \nType de mobilité : {self.contract_type}"
 
 
 class DepartementINSA(models.Model):
     name = models.CharField(max_length=100, choices=DEPARTEMENTINSA)
 
+    def __str__(self):
+        return self.name
 
 
 
 
 class ExchangeReview(models.Model):
-    pass
-    # def save(self, force_insert=False, force_update=False, using=None,
-    #          update_fields=None):
-    #     super(self, models.Model).save(force_insert=False, force_update=False, using=None,
-    #          update_fields=None)
-    # Update les métriques de l'université
+    university = models.ForeignKey("University", on_delete=models.CASCADE)
+
+    culture = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+    night_life = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+    cost_of_living = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+    security = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+
+    univ_appartment = models.BooleanField()
+    rent = models.IntegerField(blank=True)
+
+    comments = models.TextField(blank=True)
+
+    visa = models.BooleanField()
+    courses_difficulty = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+    student_proximity = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+    courses_interest = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+
+    year_accepted = models.CharField(max_length=100, choices=YEAR)
+    languages = models.CharField(max_length=100, choices=LANGUAGES)
+
+    contact = models.BooleanField()
