@@ -9,3 +9,9 @@ from .serializers import ExchangeReviewSerializer
 def health_check(request):
     return Response({'status': 'ok', 'message': 'ça maarche'})
 
+
+class ReviewViewset(viewsets.ModelViewSet):
+    queryset = ExchangeReview.objects.all()
+    serializer_class = ExchangeReviewSerializer
+
+
