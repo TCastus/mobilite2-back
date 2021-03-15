@@ -30,7 +30,7 @@ class City(models.Model):
     """
     name = models.CharField(max_length=100)
     country = models.ForeignKey("Country", on_delete=models.CASCADE)
-    nb_inhabitants = models.IntegerField(max_length=None, blank=True, validators=[MinValueValidator(0, 0)])
+    nb_inhabitants = models.PositiveIntegerField(max_length=None, blank=True)
 
     night_life_average_grade = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True
@@ -76,6 +76,22 @@ class DepartementINSA(models.Model):
         return self.name
 
 
+class Student(models.Model):
+    department = models.CharField(max_length=30, choices=DEPARTEMENTINSA)
+    email = models.EmailField(default="exemple@mail.fr")
+    name = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)
+    nationality = models.CharField(max_length=100, blank=True)
+    diploma_year = models.PositiveIntegerField(validators=[MinValueValidator(2000), MaxValueValidator(2050)])
+
+    def __str__(self):
+        return f"{self.name} {self.surname}"
+
+class FinancialAid(models.Model):
+    organization = models.CharField(max_length=100)  # mettre un manytomany a la place
+    name = models.CharField(max_length=100)
+    approx_amount = models.PositiveIntegerField(blank=True)
+    period = models.CharField(max_length=100, choices=PERIOD)
 
 
 class ExchangeReview(models.Model):
