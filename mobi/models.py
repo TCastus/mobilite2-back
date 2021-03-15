@@ -39,9 +39,13 @@ class City(models.Model):
     cultural_life_average_grade = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True
     )
+    cost_of_living_average_grade = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True
+    )
     security_average_grade = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True
     )
+    rent_average = models.DecimalField(max_digits=2, decimal_places=1, default=0, null=True)
 
     def __str__(self):
         return f"{self.name} in {self.country}"
@@ -72,6 +76,18 @@ class University(models.Model):
     department_availability = models.ManyToManyField('DepartementINSA')
 
     contract_type = models.CharField(max_length=100, choices=CONTRACTS, default='X')
+
+    univ_appartment = models.BooleanField()
+
+    courses_difficulty = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True
+    )
+    courses_interest = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True
+    )
+    student_proximity = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True
+    )
 
     def __str__(self):
         return f"{self.name} \nAvailable for {self.department_availability} \nType de mobilité : {self.contract_type}"
@@ -115,7 +131,7 @@ class ExchangeReview(models.Model):
     """
     university = models.ForeignKey("University", on_delete=models.CASCADE)
 
-    culture = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+    culture = models.PositiveIntegerField()
     night_life = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     cost_of_living = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     security = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
