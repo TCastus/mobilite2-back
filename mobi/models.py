@@ -3,12 +3,13 @@ from django.core.validators import *
 from .consts import *
 
 
-class NoteField(models.PositiveIntegerField):
-    """
-    Custom field for a grade between 0 and 5
-    """
-    def __init__(self, *args, **kwargs):
-        super().__init__(validators=[MaxValueValidator(5)], *args, **kwargs)
+# class NoteField(models.PositiveIntegerField):
+#     """
+#     Custom field for a grade between 0 and 5
+#     """
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(validators=[MaxValueValidator(5)], *args, **kwargs)
 
 
 class Country(models.Model):
@@ -47,6 +48,13 @@ class City(models.Model):
 
 
 class University(models.Model):
+    """
+    Databse object which represents a university and its characteristics
+    """
+
+    class Meta:
+        verbose_name_plural = "universities"
+
     name = models.CharField(max_length=1000)
     city = models.ForeignKey("City", on_delete=models.CASCADE)
     website = models.URLField(blank=True)
@@ -62,7 +70,7 @@ class University(models.Model):
     cwur_rank = models.IntegerField(null=True, blank=True)
 
     department_availability = models.ManyToManyField('DepartementINSA')
-    
+
     contract_type = models.CharField(max_length=100, choices=CONTRACTS, default='X')
 
     def __str__(self):
@@ -70,7 +78,7 @@ class University(models.Model):
 
 
 class DepartementINSA(models.Model):
-    name = models.CharField(max_length=100, choices=DEPARTEMENTINSA)
+    name = models.CharField(max_length=100, choices=DEPARTEMENTINSA, unique=True)
 
     def __str__(self):
         return self.name
@@ -87,14 +95,24 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.name} {self.surname}"
 
+
 class FinancialAid(models.Model):
-    organization = models.CharField(max_length=100)  # mettre un manytomany a la place
+    """
+    Represents a finalcial aid that can be asked for an student exchange
+    """
+
+    university = models.ForeignKey("University", null=True, on_delete=models.CASCADE)
+    country = models.ForeignKey("Country", null=True, on_delete=models.CASCADE)
+    organization = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     approx_amount = models.PositiveIntegerField(blank=True)
     period = models.CharField(max_length=100, choices=PERIOD)
 
 
 class ExchangeReview(models.Model):
+    """
+    A exchange review posted by a student
+    """
     university = models.ForeignKey("University", on_delete=models.CASCADE)
 
     culture = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
@@ -116,3 +134,42 @@ class ExchangeReview(models.Model):
     languages = models.CharField(max_length=100, choices=LANGUAGES)
 
     contact = models.BooleanField()
+
+    def save(self, *args, **kwargs):
+        """
+        Update the grade fields for the university and city when saving the review
+        """
+        super(ExchangeReview, self).save(*args, **kwargs)
+
+        # Get city & university
+        city = University.objects.get(id=self.university.id).city
+        uni = University.objects.get(id=self.university.id)
+        # Get every Exchange Review which is in this uni
+        reviews = University.objects.filter(university__city=city)
+
+        # Work out the sum of the grades for each category
+        culture = reviews.aggregate(models.Avg('culture'))
+        night_life = reviews.aggregate(models.Avg('night_life'))
+        cost_of_living = reviews.aggregate(models.Avg('cost_of_living'))
+        security = reviews.aggregate(models.Avg('security'))
+        rent = reviews.aggregate(models.Avg('rent'))
+
+        # Work out the average grades for university criteria
+        courses_difficulty = reviews.filter(university=uni).aggregate(models.Avg('courses_difficulty'))
+        student_proximity = reviews.filter(university=uni).aggregate(models.Avg('student_proximity'))
+        courses_interest = reviews.filter(university=uni).aggregate(models.Avg('courses_interest'))
+
+        # Save the average values
+        city.cultural_life_average_grade = culture['culture__avg']
+        city.night_life_average_grade = night_life['night_life__avg']
+        city.cost_of_living_average_grade = cost_of_living['cost_of_living__avg']
+        city.security_average_grade = security['security__avg']
+        city.rent_average = rent['rent__avg']
+
+        uni.courses_difficulty = courses_difficulty['courses_difficulty__avg']
+        uni.courses_interest = courses_interest['courses_interest__avg']
+        uni.student_proximity = student_proximity['student_proximity__avg']
+
+        # Update the university object & save
+        city.save()
+        uni.save()
