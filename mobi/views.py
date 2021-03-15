@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import mixins, generics, viewsets
-from .models import ExchangeReview
-from .serializers import ExchangeReviewSerializer
+from .models import *
+from .serializers import ExchangeReviewSerializer, CountrySerializer
 
 
 @api_view(['GET'])
@@ -14,4 +14,8 @@ class ReviewViewset(viewsets.ModelViewSet):
     queryset = ExchangeReview.objects.all()
     serializer_class = ExchangeReviewSerializer
 
+
+class CountryViewset(viewsets.ModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
 
