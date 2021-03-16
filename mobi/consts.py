@@ -33,12 +33,15 @@ PERIOD = (
     ('An', 'Annuel')
 )
 
-YEAR = (
-    ('4A', '4A'),
-    ('5A', '5A')
+SEMESTER = (
+    ('4A-S1', '4A-S1'),
+    ('4A-S2', '4A-S2'),
+    ('5A-S1', '5A-S1'),
+    ('5A-S2', '5A-S2')
 )
 
 LANGUAGES = (
     ('TOEIC', 'TOEIC'),
-    ('INC', 'INCONNU')
+    ('INC', 'INCONNU'),
+    ('AUCUN', 'AUCUN')
 )

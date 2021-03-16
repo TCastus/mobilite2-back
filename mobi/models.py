@@ -16,6 +16,9 @@ class Country(models.Model):
     """
     Database model describing a country available for an exchange
     """
+    class Meta:
+        verbose_name_plural = "Countries"
+
     name = models.CharField(max_length=100)
     continent = models.CharField(max_length=30, choices=CONTINENTS)
     ECTSConversion = models.FloatField(default=0)
@@ -29,9 +32,12 @@ class City(models.Model):
     Database model describing a city available for an exchange.
     Average grades automatically update when a review is posted.
     """
+    class Meta:
+        verbose_name_plural = "Cities"
+
     name = models.CharField(max_length=100)
     country = models.ForeignKey("Country", on_delete=models.CASCADE)
-    nb_inhabitants = models.PositiveIntegerField(max_length=None, blank=True)
+    nb_inhabitants = models.PositiveIntegerField(max_length=None, blank=True, null=True)
 
     night_life_average_grade = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True
@@ -57,7 +63,7 @@ class University(models.Model):
     """
 
     class Meta:
-        verbose_name_plural = "universities"
+        verbose_name_plural = "Universities"
 
     name = models.CharField(max_length=1000)
     city = models.ForeignKey("City", on_delete=models.CASCADE)
@@ -70,14 +76,13 @@ class University(models.Model):
         max_digits=11, decimal_places=6, null=True, blank=True
     )
 
-    review_rank = models.DecimalField(max_digits=2, decimal_places=1, default=0)
     cwur_rank = models.IntegerField(null=True, blank=True)
 
     department_availability = models.ManyToManyField('DepartementINSA')
 
     contract_type = models.CharField(max_length=100, choices=CONTRACTS, default='X')
 
-    univ_appartment = models.BooleanField()
+    univ_appartment = models.BooleanField(null=True, blank=True)
 
     courses_difficulty = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True
@@ -90,27 +95,23 @@ class University(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} \nAvailable for {self.department_availability} \nType de mobilité : {self.contract_type}"
+        return f"{self.name}"
 
 
 class DepartementINSA(models.Model):
+    class Meta:
+        verbose_name_plural = "Departements INSA"
+
     name = models.CharField(max_length=100, choices=DEPARTEMENTINSA, unique=True)
 
     def __str__(self):
         return self.name
 
-
-class Student(models.Model):
-    department = models.CharField(max_length=30, choices=DEPARTEMENTINSA)
-    email = models.EmailField(default="exemple@mail.fr")
-    name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    nationality = models.CharField(max_length=100, blank=True)
-    diploma_year = models.PositiveIntegerField(validators=[MinValueValidator(2000), MaxValueValidator(2050)])
+class Semester(models.Model):
+    name = models.CharField(max_length=100, choices=SEMESTER, unique=True)
 
     def __str__(self):
-        return f"{self.name} {self.surname}"
-
+        return self.name
 
 class FinancialAid(models.Model):
     """
@@ -137,19 +138,37 @@ class ExchangeReview(models.Model):
     security = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
 
     univ_appartment = models.BooleanField()
-    rent = models.IntegerField(blank=True)
+    rent = models.IntegerField(blank=True, null=True)
 
-    comments = models.TextField(blank=True)
+    comments = models.TextField(blank=True, null=True)
 
     visa = models.BooleanField()
     courses_difficulty = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     student_proximity = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     courses_interest = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
 
-    year_accepted = models.CharField(max_length=100, choices=YEAR)
-    languages = models.CharField(max_length=100, choices=LANGUAGES)
+    semester_accepted = models.ManyToManyField('Semester')
+    certif_languages = models.CharField(
+        verbose_name="Certifications requises pour les langues",
+        max_length=100, choices=LANGUAGES,
+        default="AUCUN"
+    )
 
-    contact = models.BooleanField()
+    # Contact of the writer
+    contact = models.BooleanField(verbose_name="Autorisation d'affichage du contact")
+    email = models.EmailField(verbose_name="Adresse email", default="exemple@mail.fr")
+    department = models.CharField(
+        verbose_name="Département INSA",
+        max_length=30,
+        choices=DEPARTEMENTINSA,
+        default="TC"
+    )
+    name = models.CharField(verbose_name="Nom", max_length=100)
+    surname = models.CharField(verbose_name="Prénom", max_length=100)
+    diploma_year = models.PositiveIntegerField(
+        verbose_name="Année de départ en échange",
+        validators=[MinValueValidator(2000), MaxValueValidator(2050)],
+    )
 
     def save(self, *args, **kwargs):
         """
@@ -161,19 +180,22 @@ class ExchangeReview(models.Model):
         city = University.objects.get(id=self.university.id).city
         uni = University.objects.get(id=self.university.id)
         # Get every Exchange Review which is in this uni
-        reviews = University.objects.filter(university__city=city)
+        reviews_city = ExchangeReview.objects.filter(university__city=city)
+        reviews_uni = ExchangeReview.objects.filter(university=uni)
+
 
         # Work out the sum of the grades for each category
-        culture = reviews.aggregate(models.Avg('culture'))
-        night_life = reviews.aggregate(models.Avg('night_life'))
-        cost_of_living = reviews.aggregate(models.Avg('cost_of_living'))
-        security = reviews.aggregate(models.Avg('security'))
-        rent = reviews.aggregate(models.Avg('rent'))
+        culture = reviews_city.aggregate(models.Avg('culture'))
+        night_life = reviews_city.aggregate(models.Avg('night_life'))
+        cost_of_living = reviews_city.aggregate(models.Avg('cost_of_living'))
+        security = reviews_city.aggregate(models.Avg('security'))
+        rent = reviews_city.aggregate(models.Avg('rent'))
+
 
         # Work out the average grades for university criteria
-        courses_difficulty = reviews.filter(university=uni).aggregate(models.Avg('courses_difficulty'))
-        student_proximity = reviews.filter(university=uni).aggregate(models.Avg('student_proximity'))
-        courses_interest = reviews.filter(university=uni).aggregate(models.Avg('courses_interest'))
+        courses_difficulty = reviews_uni.aggregate(models.Avg('courses_difficulty'))
+        student_proximity = reviews_uni.aggregate(models.Avg('student_proximity'))
+        courses_interest = reviews_uni.aggregate(models.Avg('courses_interest'))
 
         # Save the average values
         city.cultural_life_average_grade = culture['culture__avg']
