@@ -199,6 +199,10 @@ class ExchangeReview(models.Model):
         validators=[MaxValueValidator(5)],
         verbose_name="Note de sécurité"
     )
+    mobility_type = models.CharField(
+        max_length=100, choices=MOBITYPE, default='E',
+        verbose_name="Type de mobilité"
+    )
 
     univ_appartment = models.BooleanField(verbose_name="Présence d'appartements sur le campus")
     rent = models.IntegerField(blank=True, null=True, verbose_name="Approximation du loyer")

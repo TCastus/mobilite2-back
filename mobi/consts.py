@@ -22,7 +22,13 @@ DEPARTEMENTINSA = (
 CONTRACTS = (
     ('DD', 'Double Diplôme'),
     ('E', 'Echange'),
-    ('X', 'Inconnu')
+    ('X', 'Inconnu'),
+    ('DD+E', 'Double Diplôme & Echange')
+)
+
+MOBITYPE = (
+    ('DD', 'Double Diplôme'),
+    ('E', 'Echange'),
 )
 
 PERIOD = (
