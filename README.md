@@ -13,3 +13,8 @@ python manage.py migrate
 ```shell
 python manage.py runserver
 ```
+
+## Commande de remplissage de la DB
+```
+python manage.py initDB
+```
