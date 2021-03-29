@@ -14,7 +14,12 @@ class ExchangeReviewSerializer(ModelSerializer):
 class CommentSerializer(ModelSerializer):
     class Meta:
         model = ExchangeReview
-        fields = ('comments', 'name', 'surname', 'diploma_year')
+        fields = (
+            'comments',
+            'name',
+            'surname',
+            'diploma_year',
+        )
 
 
 class DepartementSerializer(ModelSerializer):
@@ -61,7 +66,15 @@ class UniversitiesSerializer(ModelSerializer):
 
     class Meta:
         model = University
-        fields = ('id', 'name', 'department_availability', 'places', 'access')
+        fields = (
+            'id',
+            'name',
+            'department_availability',
+            'places',
+            'access',
+            'longitude',
+            'latitude'
+        )
 
 
 class CitySerializer(ModelSerializer):
