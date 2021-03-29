@@ -40,6 +40,7 @@ class City(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nom de la ville")
     country = models.ForeignKey(
         "Country",
+        related_name="cities",
         on_delete=models.CASCADE,
         verbose_name="Nom du pays de la ville"
     )
@@ -82,7 +83,12 @@ class University(models.Model):
         verbose_name_plural = "Universities"
 
     name = models.CharField(max_length=1000, verbose_name="Nom de l'université")
-    city = models.ForeignKey("City", on_delete=models.CASCADE, verbose_name="Ville de l'université")
+    city = models.ForeignKey(
+        "City",
+        related_name="universities",
+        on_delete=models.CASCADE,
+        verbose_name="Ville de l'université"
+    )
     website = models.URLField(blank=True, verbose_name="Site Internet")
 
     latitude = models.DecimalField(
@@ -127,6 +133,7 @@ class University(models.Model):
     )
     financial_aid = models.ManyToManyField(
         'FinancialAid',
+        related_name="financial_aid",
         verbose_name="Aides disponibles pour cette université"
     )
 
@@ -180,6 +187,7 @@ class ExchangeReview(models.Model):
     """
     university = models.ForeignKey(
         "University",
+        related_name='reviews',
         on_delete=models.CASCADE,
         verbose_name="Université concernée")
 
