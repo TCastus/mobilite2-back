@@ -45,6 +45,8 @@ class UniversitySerializer(ModelSerializer):
             'longitude',
             'website',
             'contract_type',
+            'places',
+            'access',
             'univ_appartment',
             'courses_difficulty',
             'courses_interest',
@@ -59,7 +61,7 @@ class UniversitiesSerializer(ModelSerializer):
 
     class Meta:
         model = University
-        fields = ('id', 'name', 'department_availability')
+        fields = ('id', 'name', 'department_availability', 'places', 'access')
 
 
 class CitySerializer(ModelSerializer):

@@ -114,6 +114,15 @@ class University(models.Model):
         verbose_name="Type de mobilité"
     )
 
+    places = models.IntegerField(verbose_name="Nombre de places disponibles", null=True, blank=True)
+
+    access = models.CharField(
+        max_length=100,
+        choices=ACCESS,
+        default='Medium',
+        verbose_name="Demande / Difficulté d'accès"
+    )
+
     univ_appartment = models.BooleanField(
         null=True, blank=True,
         verbose_name="Présence d'appartements sur le campus"

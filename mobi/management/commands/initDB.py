@@ -18,10 +18,10 @@ class Command(BaseCommand):
         mtr = City(name="Montréal", country=can)
         mtr.save()
 
-        insa = University(name="INSA", contract_type="E", city=lyon, univ_appartment=False)
+        insa = University(name="INSA", contract_type="E", city=lyon, places=6, univ_appartment=False)
         insa.save()
 
-        ets = University(name="ETS", contract_type="E", city=mtr, univ_appartment=False)
+        ets = University(name="ETS", contract_type="E", city=mtr, places=3, univ_appartment=False)
         ets.save()
 
         s1 = Semester(name="4A-S1")
