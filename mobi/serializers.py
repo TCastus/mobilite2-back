@@ -61,24 +61,18 @@ class UniversitySerializer(ModelSerializer):
         )
 
 
-class UniversitiesSerializer(ModelSerializer):
-    department_availability = DepartementSerializer(many=True, read_only=True)
+class UniversityBisSerializer(ModelSerializer):
 
     class Meta:
         model = University
         fields = (
             'id',
-            'name',
-            'department_availability',
-            'places',
-            'access',
-            'longitude',
-            'latitude'
+            'name'
         )
 
 
 class CitySerializer(ModelSerializer):
-    universities = UniversitiesSerializer(many=True, read_only=True)
+    universities = UniversityBisSerializer(many=True, read_only=True)
 
     class Meta:
         model = City
