@@ -84,4 +84,4 @@ class CountrySerializer(ModelSerializer):
 
     class Meta:
         model = Country
-        fields = ('name', 'cities')
+        fields = ('id', 'name', 'cities')
