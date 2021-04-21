@@ -3,6 +3,7 @@ from django.core.validators import *
 from .consts import *
 
 
+# TODO: Implement the model and use it
 # class NoteField(models.PositiveIntegerField):
 #     """
 #     Custom field for a grade between 0 and 5

@@ -1,7 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import mixins, generics, viewsets
-from rest_framework.status import *
+from rest_framework import viewsets
 from .models import *
 from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer
 
