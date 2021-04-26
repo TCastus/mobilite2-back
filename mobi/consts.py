@@ -39,6 +39,12 @@ PERIOD = (
     ('An', 'Annuel')
 )
 
+ACCESS = (
+    ('High', 'Demande forte'),
+    ('Medium', 'Demande normale'),
+    ('Low', 'Demande faible')
+)
+
 SEMESTER = (
     ('4A-S1', '4A-S1'),
     ('4A-S2', '4A-S2'),
