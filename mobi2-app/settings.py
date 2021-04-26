@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mobi',  # Our app
     'corsheaders',  # Resolve CORS problems
     'rest_framework',  # Django REST framework
-    'debug_toolbar'  # Django debug toolbar
+    'drf_yasg',  # Swagger web interface for endpoints
+    'debug_toolbar',  # Django debug toolbar
+    'mobi',  # Our app
 ]
 
 MIDDLEWARE = [
