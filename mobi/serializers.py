@@ -1,5 +1,5 @@
-from rest_framework.serializers import ModelSerializer
-from .models import ExchangeReview, University, Country, City, DepartementINSA, FinancialAid
+from rest_framework.serializers import ModelSerializer, ReadOnlyField
+from .models import ExchangeReview, University, Country, City, DepartementINSA, FinancialAid, Places
 
 
 # Model serializers go here...
@@ -32,35 +32,6 @@ class FinancialAidSerializer(ModelSerializer):
     class Meta:
         model = FinancialAid
         fields = '__all__'
-
-
-class UniversitySerializer(ModelSerializer):
-    department_availability = DepartementSerializer(many=True, read_only=True)
-    financial_aid = FinancialAidSerializer(many=True, read_only=True)
-    reviews = CommentSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = University
-        fields = (
-            'id',
-            'name',
-            'department_availability',
-            'cwur_rank',
-            'latitude',
-            'longitude',
-            'website',
-            'contract_type',
-            'places',
-            'access',
-            'univ_appartment',
-            'courses_difficulty',
-            'courses_interest',
-            'student_proximity',
-            'financial_aid',
-            'reviews'
-        )
-
-
 class UniversityBisSerializer(ModelSerializer):
 
     class Meta:
@@ -85,3 +56,45 @@ class CountrySerializer(ModelSerializer):
     class Meta:
         model = Country
         fields = ('id', 'name', 'cities')
+
+
+class PlacesSerializer(ModelSerializer):
+
+    class Meta:
+        model = Places
+        fields = '__all__'
+
+
+class UniversitySerializer(ModelSerializer):
+    department_availability = DepartementSerializer(many=True, read_only=True)
+    financial_aid = FinancialAidSerializer(many=True, read_only=True)
+    reviews = CommentSerializer(many=True, read_only=True)
+    city_name = ReadOnlyField()
+    country_name = ReadOnlyField()
+    places = PlacesSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = University
+        fields = (
+            'id',
+            'name',
+            'city_name',
+            'country_name',
+            'department_availability',
+            'cwur_rank',
+            'latitude',
+            'longitude',
+            'website',
+            'access',
+            'places',
+            'univ_appartment',
+            'courses_difficulty',
+            'courses_interest',
+            'student_proximity',
+            'financial_aid',
+            'reviews'
+        )
+
+
+
+
