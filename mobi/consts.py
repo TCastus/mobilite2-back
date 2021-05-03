@@ -19,13 +19,6 @@ DEPARTEMENTINSA = (
     ("TC", "Télécommunications, Services et Usages"),
 )
 
-CONTRACTS = (
-    ('DD', 'Double Diplôme'),
-    ('E', 'Echange'),
-    ('X', 'Inconnu'),
-    ('DD+E', 'Double Diplôme & Echange')
-)
-
 MOBITYPE = (
     ('DD', 'Double Diplôme'),
     ('E', 'Echange'),

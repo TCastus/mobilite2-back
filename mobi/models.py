@@ -110,13 +110,6 @@ class University(models.Model):
         verbose_name="Disponibilité selon le Département"
     )
 
-    contract_type = models.CharField(
-        max_length=100, choices=CONTRACTS, default='X',
-        verbose_name="Type de mobilité"
-    )
-
-    places = models.IntegerField(verbose_name="Nombre de places disponibles", null=True, blank=True)
-
     access = models.CharField(
         max_length=100,
         choices=ACCESS,
@@ -150,6 +143,12 @@ class University(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def city_name(self):
+        return f"{self.city.name}"
+
+    def country_name(self):
+        return f"{self.city.country.name}"
+
 
 class DepartementINSA(models.Model):
     class Meta:
@@ -165,6 +164,40 @@ class DepartementINSA(models.Model):
     def __str__(self):
         return self.name
 
+class Places(models.Model):
+    class Meta:
+        verbose_name_plural = "Places Disponibles"
+
+    university = models.ForeignKey(
+        "University",
+        related_name="places",
+        on_delete=models.CASCADE,
+        verbose_name="Université"
+    )
+
+    type = models.CharField(
+        max_length=100,
+        choices=MOBITYPE,
+        unique=True,
+        default='E',
+        verbose_name="Type de place"
+    )
+
+    number = models.IntegerField(
+        blank=True,
+        default=0,
+        verbose_name="Nombre d'étudiants acceptés"
+    )
+
+    decoupe = models.BooleanField(default=False)
+
+    duration = models.DecimalField(
+        max_digits=3, decimal_places=1, default=0, null=True,
+        verbose_name="Durée totale disponible en semestres"
+    )
+
+    def __str__(self):
+        return f"{self.number} étudiants pour {self.duration} semestres en {self.type}"
 
 class Semester(models.Model):
     name = models.CharField(max_length=100, choices=SEMESTER, unique=True, verbose_name="Semestre")
