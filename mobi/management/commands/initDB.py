@@ -44,6 +44,15 @@ class Command(BaseCommand):
         erasmus = FinancialAid(organization="ERASMUS", name="Mobilité", approx_amount=300, period='Mensuel')
         erasmus.save()
 
+        placesINSA = PlacesExchange(university=insa, number=10)
+        placesINSA.save()
+        placesINSA.semester.add(s1)
+        placesINSA.department_availability.add(9)
+
+        placesETS = PlacesDD(university=ets, number=10)
+        placesETS.save()
+        placesETS.department_availability.add(7)
+
         review = ExchangeReview(
             university=insa,
             culture=5,

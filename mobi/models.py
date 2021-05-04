@@ -164,40 +164,63 @@ class DepartementINSA(models.Model):
     def __str__(self):
         return self.name
 
-class Places(models.Model):
+
+class PlacesExchange(models.Model):
     class Meta:
-        verbose_name_plural = "Places Disponibles"
+        verbose_name_plural = "Places disponibles pour des échanges académiques"
 
     university = models.ForeignKey(
         "University",
-        related_name="places",
+        related_name="placesExchange",
         on_delete=models.CASCADE,
         verbose_name="Université"
     )
 
-    type = models.CharField(
-        max_length=100,
-        choices=MOBITYPE,
-        unique=True,
-        default='E',
-        verbose_name="Type de place"
-    )
-
     number = models.IntegerField(
-        blank=True,
         default=0,
-        verbose_name="Nombre d'étudiants acceptés"
+        verbose_name="Nombre de places"
     )
 
-    decoupe = models.BooleanField(default=False)
+    semester = models.ManyToManyField(
+        'Semester',
+        verbose_name="Semestres concernés"
+    )
 
-    duration = models.DecimalField(
-        max_digits=3, decimal_places=1, default=0, null=True,
-        verbose_name="Durée totale disponible en semestres"
+    department_availability = models.ManyToManyField(
+        'DepartementINSA',
+        verbose_name="Disponibilité selon le Département"
     )
 
     def __str__(self):
-        return f"{self.number} étudiants pour {self.duration} semestres en {self.type}"
+        return f"{self.number} places pour {'/'.join([semester.name for semester in self.semester.all()])} pour départements {'/'.join([dep.name for dep in self.department_availability.all()])} en Echange"
+
+
+class PlacesDD(models.Model):
+    class Meta:
+        verbose_name_plural = "Places disponibles pour des doubles diplômes"
+
+    university = models.ForeignKey(
+        "University",
+        related_name="placesDD",
+        on_delete=models.CASCADE,
+        verbose_name="Université"
+    )
+
+    number = models.IntegerField(
+        default=0,
+        verbose_name="Nombre de places"
+    )
+
+    department_availability = models.ManyToManyField(
+        'DepartementINSA',
+        verbose_name="Disponibilité selon le Département"
+    )
+
+    def __str__(self):
+        return f"{self.number} places pour départements {'/'.join([dep.name for dep in self.department_availability.all()])} en DD"
+
+
+
 
 class Semester(models.Model):
     name = models.CharField(max_length=100, choices=SEMESTER, unique=True, verbose_name="Semestre")
@@ -287,7 +310,7 @@ class ExchangeReview(models.Model):
 
     # Contact of the writer
     contact = models.BooleanField(verbose_name="Autorisation d'affichage du contact")
-    email = models.EmailField(verbose_name="Adresse email", default="exemple@mail.fr")
+    email = models.EmailField(verbose_name="Adresse email")
     department = models.CharField(
         verbose_name="Département INSA",
         max_length=30,
