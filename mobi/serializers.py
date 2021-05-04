@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, ReadOnlyField
-from .models import ExchangeReview, University, Country, City, DepartementINSA, FinancialAid, Places
+from .models import *
 
 
 # Model serializers go here...
@@ -28,10 +28,18 @@ class DepartementSerializer(ModelSerializer):
         fields = ('name',)
 
 
+class SemesterSerializer(ModelSerializer):
+    class Meta:
+        model = Semester
+        fields = ('name',)
+
+
 class FinancialAidSerializer(ModelSerializer):
     class Meta:
         model = FinancialAid
         fields = '__all__'
+
+
 class UniversityBisSerializer(ModelSerializer):
 
     class Meta:
@@ -58,20 +66,31 @@ class CountrySerializer(ModelSerializer):
         fields = ('id', 'name', 'cities')
 
 
-class PlacesSerializer(ModelSerializer):
+class PlacesExchangeSerializer(ModelSerializer):
+    department_availability = DepartementSerializer(many=True, read_only=True)
+    semester = SemesterSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Places
-        fields = '__all__'
+        model = PlacesExchange
+        fields = ('number', 'department_availability', 'semester')
+
+
+class PlacesDDSerializer(ModelSerializer):
+    department_availability = DepartementSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = PlacesDD
+        fields = ('number', 'department_availability')
 
 
 class UniversitySerializer(ModelSerializer):
     department_availability = DepartementSerializer(many=True, read_only=True)
     financial_aid = FinancialAidSerializer(many=True, read_only=True)
     reviews = CommentSerializer(many=True, read_only=True)
+    placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
+    placesDD = PlacesDDSerializer(many=True, read_only=True)
     city_name = ReadOnlyField()
     country_name = ReadOnlyField()
-    places = PlacesSerializer(many=True, read_only=True)
 
     class Meta:
         model = University
@@ -86,7 +105,8 @@ class UniversitySerializer(ModelSerializer):
             'longitude',
             'website',
             'access',
-            'places',
+            'placesExchange',
+            'placesDD',
             'univ_appartment',
             'courses_difficulty',
             'courses_interest',
