@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from .models import *
 from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer
 
@@ -21,6 +21,8 @@ class CountryViewset(viewsets.ModelViewSet):
 
 
 class UniversityViewset(viewsets.ModelViewSet):
+    search_fields = ('name',)
+    filter_backends = (filters.SearchFilter,)
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
 
