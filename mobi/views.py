@@ -21,8 +21,13 @@ class CountryViewset(viewsets.ModelViewSet):
 
 
 class UniversityViewset(viewsets.ModelViewSet):
-    search_fields = ('name',)
-    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'city__name', 'city__country__name', )
+    ordering_filters = ('cwur_rank',
+                        'courses_interest',
+                        'courses_difficulty',
+                        'student_proximity',
+                        'name', )
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter)
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
 
