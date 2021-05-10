@@ -8,7 +8,8 @@ CONTINENTS = (
 )
 
 DEPARTEMENTINSA = (
-    ("BS", "Biosciences"),
+    ("BB", "Biosciences Biochimie et Biotechnologie"),
+    ("BIM", "Bioinformatique et Modélisation"),
     ("GCU", "Génie Civil et Urbanisme"),
     ("GE", "Génie Electrique"),
     ("GEN", "Génie Energétique et Environnement"),

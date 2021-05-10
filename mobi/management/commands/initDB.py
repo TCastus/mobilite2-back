@@ -33,7 +33,7 @@ class Command(BaseCommand):
         s4 = Semester(name="5A-S2")
         s4.save()
 
-        dep = ["BS", "GCU", "GE", "GEN", "GI", "GM", "IF", "SGM", "TC"]
+        dep = ["BB", "BIM", "GCU", "GE", "GEN", "GI", "GM", "IF", "SGM", "TC"]
 
         tab_dep = [DepartementINSA(name=i) for i in dep]
         for i in tab_dep:

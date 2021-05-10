@@ -82,9 +82,8 @@ class PlacesDDSerializer(ModelSerializer):
         model = PlacesDD
         fields = ('number', 'department_availability')
 
-
+        
 class UniversitySerializer(ModelSerializer):
-    department_availability = DepartementSerializer(many=True, read_only=True)
     financial_aid = FinancialAidSerializer(many=True, read_only=True)
     reviews = CommentSerializer(many=True, read_only=True)
     placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
@@ -99,7 +98,6 @@ class UniversitySerializer(ModelSerializer):
             'name',
             'city_name',
             'country_name',
-            'department_availability',
             'cwur_rank',
             'latitude',
             'longitude',
