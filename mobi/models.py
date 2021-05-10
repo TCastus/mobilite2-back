@@ -105,11 +105,6 @@ class University(models.Model):
         null=True, blank=True,
         verbose_name="Classement CWUR")
 
-    department_availability = models.ManyToManyField(
-        'DepartementINSA',
-        verbose_name="Disponibilité selon le Département"
-    )
-
     access = models.CharField(
         max_length=100,
         choices=ACCESS,
@@ -192,7 +187,7 @@ class PlacesExchange(models.Model):
     )
 
     def __str__(self):
-        return f"{self.number} places pour {'/'.join([semester.name for semester in self.semester.all()])} pour départements {'/'.join([dep.name for dep in self.department_availability.all()])} en Echange"
+        return f"{self.university.name} : {self.number} places pour {'/'.join([semester.name for semester in self.semester.all()])} pour {'/'.join([dep.name for dep in self.department_availability.all()])} en Echange"
 
 
 class PlacesDD(models.Model):
@@ -217,7 +212,7 @@ class PlacesDD(models.Model):
     )
 
     def __str__(self):
-        return f"{self.number} places pour départements {'/'.join([dep.name for dep in self.department_availability.all()])} en DD"
+        return f"{self.university.name} : {self.number} places pour {'/'.join([dep.name for dep in self.department_availability.all()])} en DD"
 
 
 
