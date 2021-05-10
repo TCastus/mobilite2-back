@@ -217,6 +217,7 @@ class PlacesDD(models.Model):
 
 
 
+
 class Semester(models.Model):
     name = models.CharField(max_length=100, choices=SEMESTER, unique=True, verbose_name="Semestre")
 

@@ -82,7 +82,7 @@ class PlacesDDSerializer(ModelSerializer):
         model = PlacesDD
         fields = ('number', 'department_availability')
 
-
+        
 class UniversitySerializer(ModelSerializer):
     financial_aid = FinancialAidSerializer(many=True, read_only=True)
     reviews = CommentSerializer(many=True, read_only=True)
