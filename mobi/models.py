@@ -119,20 +119,30 @@ class University(models.Model):
 
     courses_difficulty = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True,
+        editable=False,
         verbose_name="Note sur la difficulté des cours"
     )
     courses_interest = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True,
+        editable=False,
         verbose_name="Note sur l'intérêt des cours"
     )
     student_proximity = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True,
+        editable=False,
         verbose_name="Note sur la proximité sociale des étudiants"
     )
     financial_aid = models.ManyToManyField(
         'FinancialAid',
         related_name="financial_aid",
         verbose_name="Aides disponibles pour cette université"
+    )
+    review_number = models.IntegerField(
+        verbose_name="Nombre de Review",
+        null=True,
+        blank=True,
+        default=0,
+        editable=False,
     )
 
     def __str__(self):
@@ -247,6 +257,8 @@ class ExchangeReview(models.Model):
     """
     A exchange review posted by a student
     """
+    datetime = models.DateField(verbose_name="Jour de publication", auto_now_add=True)
+
     university = models.ForeignKey(
         "University",
         related_name='reviews',
