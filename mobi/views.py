@@ -38,14 +38,6 @@ def search(request):
 
         queryset = University.objects.all()
 
-
-
-
-        #uni_rent_max = request.data['rent_max']
-
-        #uni_cost_living = request.data['cost_living']
-
-
         if 'name' in request.data:
             uni_name = request.data['name']
             queryset = queryset.filter(name__iexact=uni_name)
@@ -73,15 +65,13 @@ def search(request):
                 queryset = queryset.exclude(city__country__continent="Europe")
             else:
                 queryset = queryset.filter(city__country__continent="Europe")
-
-
-        #Attenton si la key existe mais est reliée a rien
-        #Dans les models, changer la rent de City à University
-        #On s'en branle du loyer dans la ville. On veut le loyer des logements uniersitaires.
+        if 'rent_max' in request.data:
+            uni_rent_max = request.data['rent_max']
+            queryset = queryset.filter(rent_average__lte=uni_rent_max)
+        if 'cost_living_max' in request.data:
+            uni_cost_living_max = request.data['cost_living_max']
+            queryset = queryset.filter(city__cost_of_living_average_grade__lte=uni_cost_living_max)
 
         serializer = UniversitySerializer(queryset, many=True)
 
         return Response(serializer.data)
-
-
-

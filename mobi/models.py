@@ -66,10 +66,6 @@ class City(models.Model):
         max_digits=2, decimal_places=1, default=0, null=True,
         verbose_name="Note de sécurité"
     )
-    rent_average = models.IntegerField(
-        default=0, null=True,
-        verbose_name="Loyer moyen"
-    )
 
     def __str__(self):
         return f"{self.name} in {self.country}"
@@ -133,6 +129,10 @@ class University(models.Model):
     student_proximity = models.DecimalField(
         max_digits=2, decimal_places=1, default=0, null=True,
         verbose_name="Note sur la proximité sociale des étudiants"
+    )
+    rent_average = models.IntegerField(
+        default=0, null=True,
+        verbose_name="Loyer moyen"
     )
     financial_aid = models.ManyToManyField(
         'FinancialAid',
