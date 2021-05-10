@@ -19,6 +19,7 @@ class CommentSerializer(ModelSerializer):
             'name',
             'surname',
             'diploma_year',
+            'datetime',
         )
 
 
@@ -106,6 +107,7 @@ class UniversitySerializer(ModelSerializer):
             'placesExchange',
             'placesDD',
             'univ_appartment',
+            'review_number',
             'courses_difficulty',
             'courses_interest',
             'student_proximity',
