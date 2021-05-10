@@ -38,24 +38,49 @@ def search(request):
 
         queryset = University.objects.all()
 
-        uni_name = request.data['name']
-        uni_access = request.POST.get("access")
-        uni_cultural_life_min = request.POST.get("cultural_life_min")
-        uni_country = request.POST.get("country")
-        uny_nightlife = request.POST.get("nightlife")
-        uni_security = request.POST.get("security")
-        uni_rent_max = request.POST.get("rent_max")
-        uni_courses_diff = request.POST.get("courses_difficulty")
-        uni_cost_living = request.POST.get("cost_living")
-        uni_outside_europe = request.POST.get("outside_europe")
 
-        queryset = queryset.filter(
-            name=uni_name,
-        )
 
-        print(request.POST.get("name"))
+
+        #uni_rent_max = request.data['rent_max']
+
+        #uni_cost_living = request.data['cost_living']
+
+
+        if 'name' in request.data:
+            uni_name = request.data['name']
+            queryset = queryset.filter(name__iexact=uni_name)
+        if 'access' in request.data:
+            uni_access = request.data['access']
+            queryset = queryset.filter(access=uni_access)
+        if 'country' in request.data:
+            uni_country = request.data['country']
+            queryset = queryset.filter(city__country__name__icontains=uni_country)
+        if 'nightlife' in request.data:
+            uni_nightlife = request.data['nightlife']
+            queryset = queryset.filter(city__night_life_average_grade__gte=uni_nightlife)
+        if 'courses_diff' in request.data:
+            uni_courses_diff = request.data['courses_difficulty']
+            queryset = queryset.filter(courses_difficulty__lte=uni_courses_diff)
+        if 'security' in request.data:
+            uni_security = request.data['security']
+            queryset = queryset.filter(city__security_average_grade__gte=uni_security)
+        if 'cultural_life_min' in request.data:
+            uni_cultural_life_min = request.data['cultural_life_min']
+            queryset = queryset.filter(city__cultural_life_average_grade__gte=uni_cultural_life_min)
+        if 'outside_europe' in request.data:
+            uni_outside_europe = request.data['outside_europe']
+            if uni_outside_europe == 'True':
+                queryset = queryset.exclude(city__country__continent="Europe")
+            else:
+                queryset = queryset.filter(city__country__continent="Europe")
+
+
+        #Attenton si la key existe mais est reliée a rien
+        #Dans les models, changer la rent de City à University
+        #On s'en branle du loyer dans la ville. On veut le loyer des logements uniersitaires.
 
         serializer = UniversitySerializer(queryset, many=True)
+
         return Response(serializer.data)
 
 
