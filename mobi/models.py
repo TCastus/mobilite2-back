@@ -77,7 +77,7 @@ class City(models.Model):
 
 class University(models.Model):
     """
-    Databse object which represents a university and its characteristics
+    Database object which represents a university and its characteristics
     """
 
     class Meta:
@@ -156,6 +156,10 @@ class University(models.Model):
 
 
 class DepartementINSA(models.Model):
+    """
+    Database object that countains the name of each INSA Department
+    """
+
     class Meta:
         verbose_name_plural = "Departements INSA"
 
@@ -171,6 +175,10 @@ class DepartementINSA(models.Model):
 
 
 class PlacesExchange(models.Model):
+    """
+    Database object representing a set of available spots for exchanges
+    """
+
     class Meta:
         verbose_name_plural = "Places disponibles pour des échanges académiques"
 
@@ -201,6 +209,10 @@ class PlacesExchange(models.Model):
 
 
 class PlacesDD(models.Model):
+    """
+    Database object representing a set of available spots for double degree
+    """
+
     class Meta:
         verbose_name_plural = "Places disponibles pour des doubles diplômes"
 
@@ -229,6 +241,10 @@ class PlacesDD(models.Model):
 
 
 class Semester(models.Model):
+    """
+    Database object that countains the semesters on which students can go on exchange or other type of mobility
+    """
+
     name = models.CharField(max_length=100, choices=SEMESTER, unique=True, verbose_name="Semestre")
 
     def __str__(self):
@@ -237,7 +253,7 @@ class Semester(models.Model):
 
 class FinancialAid(models.Model):
     """
-    Represents a financial aid that can be asked for a student exchange
+    Database object that represents a financial aid that can be asked for a student exchange
     """
 
     organization = models.CharField(max_length=100, verbose_name="Nom de l'Organisation de l'aide")
@@ -339,7 +355,7 @@ class ExchangeReview(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Update the grade fields for the university and city when saving the review
+        Update the grade fields and the number of reviews for the university and city when saving the review
         """
         super(ExchangeReview, self).save(*args, **kwargs)
 
