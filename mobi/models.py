@@ -362,6 +362,9 @@ class ExchangeReview(models.Model):
         student_proximity = reviews_uni.aggregate(models.Avg('student_proximity'))
         courses_interest = reviews_uni.aggregate(models.Avg('courses_interest'))
 
+        # Work out the total number of reviews
+        number = reviews_uni.count()
+
         # Save the average values
         city.cultural_life_average_grade = culture['culture__avg']
         city.night_life_average_grade = night_life['night_life__avg']
@@ -372,6 +375,7 @@ class ExchangeReview(models.Model):
         uni.courses_difficulty = courses_difficulty['courses_difficulty__avg']
         uni.courses_interest = courses_interest['courses_interest__avg']
         uni.student_proximity = student_proximity['student_proximity__avg']
+        uni.review_number = number
 
 
         # Update the university object & save
