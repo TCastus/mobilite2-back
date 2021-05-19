@@ -50,27 +50,6 @@ class City(models.Model):
         verbose_name="Nombre d'habitants"
     )
 
-    night_life_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la vie nocturne"
-    )
-    cultural_life_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la vie culturelle"
-    )
-    cost_of_living_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur le coût de la vie"
-    )
-    security_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note de sécurité"
-    )
-    rent_average = models.IntegerField(
-        default=0, null=True,
-        verbose_name="Loyer moyen"
-    )
-
     def __str__(self):
         return f"{self.name} in {self.country}"
 
@@ -117,32 +96,10 @@ class University(models.Model):
         verbose_name="Présence d'appartements sur le campus"
     )
 
-    courses_difficulty = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        editable=False,
-        verbose_name="Note sur la difficulté des cours"
-    )
-    courses_interest = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        editable=False,
-        verbose_name="Note sur l'intérêt des cours"
-    )
-    student_proximity = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        editable=False,
-        verbose_name="Note sur la proximité sociale des étudiants"
-    )
     financial_aid = models.ManyToManyField(
         'FinancialAid',
         related_name="financial_aid",
         verbose_name="Aides disponibles pour cette université"
-    )
-    review_number = models.IntegerField(
-        verbose_name="Nombre de Review",
-        null=True,
-        blank=True,
-        default=0,
-        editable=False,
     )
 
     def __str__(self):
@@ -154,48 +111,51 @@ class University(models.Model):
     def country_name(self):
         return f"{self.city.country.name}"
 
-    def update_courses_difficulty(self):
-        """
-        Update the grade fields and the number of reviews for the university and city when saving the review
-        """
-
-        # Get every Exchange Review which is in this uni
+    def courses_difficulty(self):
         reviews_uni = ExchangeReview.objects.filter(university=self)
-
-        # Work out the average grades for university criteria
         courses_difficulty = reviews_uni.aggregate(models.Avg('courses_difficulty'))
+        return courses_difficulty
 
-        self.courses_difficulty = courses_difficulty['courses_difficulty__avg']
-        self.save()
-        return self.courses_difficulty
-
-    def update_courses_interest(self):
-
+    def courses_interest(self):
         reviews_uni = ExchangeReview.objects.filter(university=self)
-
-        # Work out the average grades for university criteria
         courses_interest = reviews_uni.aggregate(models.Avg('courses_interest'))
+        return courses_interest
 
-        self.courses_interest = courses_interest['courses_interest__avg']
-        self.save()
-        return self.courses_interest
-
-    def update_student_proximity(self):
-        # Get every Exchange Review which is in this uni
+    def student_proximity(self):
         reviews_uni = ExchangeReview.objects.filter(university=self)
-
-        # Work out the average grades for university criteria
         student_proximity = reviews_uni.aggregate(models.Avg('student_proximity'))
+        return student_proximity
 
-        self.student_proximity = student_proximity['student_proximity__avg']
-
-        self.save()
-        return self.student_proximity
-
-    def count(self):
+    def review_number(self):
         reviews_uni = ExchangeReview.objects.filter(university=self)
         number = reviews_uni.count()
         return number
+
+    def culture(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        culture = reviews_city.aggregate(models.Avg('culture'))
+        return culture
+
+    def night_life(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        night_life = reviews_city.aggregate(models.Avg('night_life'))
+        return night_life
+
+    def cost_of_living(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        cost_of_living = reviews_city.aggregate(models.Avg('cost_of_living'))
+        return cost_of_living
+
+    def security(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        security = reviews_city.aggregate(models.Avg('security'))
+        return security
+
+    def rent(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        rent = reviews_city.aggregate(models.Avg('rent'))
+        return rent
+
 
 
 

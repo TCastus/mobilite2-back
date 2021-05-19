@@ -91,6 +91,14 @@ class UniversitySerializer(ModelSerializer):
     placesDD = PlacesDDSerializer(many=True, read_only=True)
     city_name = ReadOnlyField()
     country_name = ReadOnlyField()
+    courses_difficulty = ReadOnlyField()
+    courses_interest = ReadOnlyField()
+    student_proximity = ReadOnlyField()
+    review_number = ReadOnlyField()
+    culture = ReadOnlyField()
+    night_life = ReadOnlyField()
+    cost_of_living = ReadOnlyField()
+
 
 
     class Meta:
@@ -115,6 +123,8 @@ class UniversitySerializer(ModelSerializer):
             'financial_aid',
             'reviews'
         )
+
+
 
 
 
