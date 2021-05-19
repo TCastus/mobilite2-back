@@ -317,7 +317,7 @@ class ExchangeReview(models.Model):
     )
     name = models.CharField(verbose_name="Nom", max_length=100)
     surname = models.CharField(verbose_name="Prénom", max_length=100)
-    diploma_year = models.PositiveIntegerField(
+    year = models.PositiveIntegerField(
         verbose_name="Année de départ en échange",
         validators=[MinValueValidator(2000), MaxValueValidator(2050)],
     )
