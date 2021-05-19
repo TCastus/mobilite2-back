@@ -19,6 +19,7 @@ class CommentSerializer(ModelSerializer):
             'name',
             'surname',
             'diploma_year',
+            'semester',
         )
 
 

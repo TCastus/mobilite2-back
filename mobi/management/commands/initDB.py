@@ -68,6 +68,7 @@ class Command(BaseCommand):
             courses_interest=5,
             student_proximity=5,
             certif_languages='AUCUN',
+            semester="4A",
             contact=True,
             email="eric.maurincomme@insa-lyon.fr",
             department="TC",
@@ -76,7 +77,6 @@ class Command(BaseCommand):
             diploma_year=2020,
         )
         review.save()
-        review.semester_accepted.add(s1)
         review.financial_aid.add(argent)
         review.save()
 
