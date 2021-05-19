@@ -74,7 +74,7 @@ class Command(BaseCommand):
             department="TC",
             name="Maurincomme",
             surname="Eric",
-            diploma_year=2020,
+            year=2020,
         )
         review.save()
         review.financial_aid.add(argent)

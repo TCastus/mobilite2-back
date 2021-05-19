@@ -18,7 +18,8 @@ class CommentSerializer(ModelSerializer):
             'comments',
             'name',
             'surname',
-            'diploma_year',
+            'year',
+            'semester',
             'datetime',
         )
 
@@ -98,6 +99,8 @@ class UniversitySerializer(ModelSerializer):
     culture = ReadOnlyField()
     night_life = ReadOnlyField()
     cost_of_living = ReadOnlyField()
+    security = ReadOnlyField()
+    rent = ReadOnlyField()
 
 
 
@@ -120,6 +123,11 @@ class UniversitySerializer(ModelSerializer):
             'courses_difficulty',
             'courses_interest',
             'student_proximity',
+            'culture',
+            'night_life',
+            'cost_of_living',
+            'security',
+            'rent',
             'financial_aid',
             'reviews'
         )
