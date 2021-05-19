@@ -18,7 +18,9 @@ class CommentSerializer(ModelSerializer):
             'comments',
             'name',
             'surname',
-            'diploma_year',
+            'year',
+            'semester',
+            'datetime',
         )
 
 
@@ -90,6 +92,17 @@ class UniversitySerializer(ModelSerializer):
     placesDD = PlacesDDSerializer(many=True, read_only=True)
     city_name = ReadOnlyField()
     country_name = ReadOnlyField()
+    courses_difficulty = ReadOnlyField()
+    courses_interest = ReadOnlyField()
+    student_proximity = ReadOnlyField()
+    review_number = ReadOnlyField()
+    culture = ReadOnlyField()
+    night_life = ReadOnlyField()
+    cost_of_living = ReadOnlyField()
+    security = ReadOnlyField()
+    rent = ReadOnlyField()
+
+
 
     class Meta:
         model = University
@@ -106,12 +119,20 @@ class UniversitySerializer(ModelSerializer):
             'placesExchange',
             'placesDD',
             'univ_appartment',
+            'review_number',
             'courses_difficulty',
             'courses_interest',
             'student_proximity',
+            'culture',
+            'night_life',
+            'cost_of_living',
+            'security',
+            'rent',
             'financial_aid',
             'reviews'
         )
+
+
 
 
 

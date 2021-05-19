@@ -50,34 +50,13 @@ class City(models.Model):
         verbose_name="Nombre d'habitants"
     )
 
-    night_life_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la vie nocturne"
-    )
-    cultural_life_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la vie culturelle"
-    )
-    cost_of_living_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur le coût de la vie"
-    )
-    security_average_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note de sécurité"
-    )
-    rent_average = models.IntegerField(
-        default=0, null=True,
-        verbose_name="Loyer moyen"
-    )
-
     def __str__(self):
         return f"{self.name} in {self.country}"
 
 
 class University(models.Model):
     """
-    Databse object which represents a university and its characteristics
+    Database object which represents a university and its characteristics
     """
 
     class Meta:
@@ -117,18 +96,6 @@ class University(models.Model):
         verbose_name="Présence d'appartements sur le campus"
     )
 
-    courses_difficulty = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la difficulté des cours"
-    )
-    courses_interest = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur l'intérêt des cours"
-    )
-    student_proximity = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la proximité sociale des étudiants"
-    )
     financial_aid = models.ManyToManyField(
         'FinancialAid',
         related_name="financial_aid",
@@ -144,8 +111,60 @@ class University(models.Model):
     def country_name(self):
         return f"{self.city.country.name}"
 
+    def courses_difficulty(self):
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+        courses_difficulty = reviews_uni.aggregate(models.Avg('courses_difficulty'))
+        return courses_difficulty
+
+    def courses_interest(self):
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+        courses_interest = reviews_uni.aggregate(models.Avg('courses_interest'))
+        return courses_interest
+
+    def student_proximity(self):
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+        student_proximity = reviews_uni.aggregate(models.Avg('student_proximity'))
+        return student_proximity
+
+    def review_number(self):
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+        number = reviews_uni.count()
+        return number
+
+    def culture(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        culture = reviews_city.aggregate(models.Avg('culture'))
+        return culture
+
+    def night_life(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        night_life = reviews_city.aggregate(models.Avg('night_life'))
+        return night_life
+
+    def cost_of_living(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        cost_of_living = reviews_city.aggregate(models.Avg('cost_of_living'))
+        return cost_of_living
+
+    def security(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        security = reviews_city.aggregate(models.Avg('security'))
+        return security
+
+    def rent(self):
+        reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        rent = reviews_city.aggregate(models.Avg('rent'))
+        return rent
+
+
+
+
 
 class DepartementINSA(models.Model):
+    """
+    Database object that countains the name of each INSA Department
+    """
+
     class Meta:
         verbose_name_plural = "Departements INSA"
 
@@ -161,6 +180,10 @@ class DepartementINSA(models.Model):
 
 
 class PlacesExchange(models.Model):
+    """
+    Database object representing a set of available spots for exchanges
+    """
+
     class Meta:
         verbose_name_plural = "Places disponibles pour des échanges académiques"
 
@@ -191,6 +214,10 @@ class PlacesExchange(models.Model):
 
 
 class PlacesDD(models.Model):
+    """
+    Database object representing a set of available spots for double degree
+    """
+
     class Meta:
         verbose_name_plural = "Places disponibles pour des doubles diplômes"
 
@@ -219,6 +246,10 @@ class PlacesDD(models.Model):
 
 
 class Semester(models.Model):
+    """
+    Database object that countains the semesters on which students can go on exchange or other type of mobility
+    """
+
     name = models.CharField(max_length=100, choices=SEMESTER, unique=True, verbose_name="Semestre")
 
     def __str__(self):
@@ -227,7 +258,7 @@ class Semester(models.Model):
 
 class FinancialAid(models.Model):
     """
-    Represents a financial aid that can be asked for a student exchange
+    Database object that represents a financial aid that can be asked for a student exchange
     """
 
     organization = models.CharField(max_length=100, verbose_name="Nom de l'Organisation de l'aide")
@@ -247,6 +278,8 @@ class ExchangeReview(models.Model):
     """
     A exchange review posted by a student
     """
+    datetime = models.DateField(verbose_name="Jour de publication", auto_now_add=True)
+
     university = models.ForeignKey(
         "University",
         related_name='reviews',
@@ -293,7 +326,8 @@ class ExchangeReview(models.Model):
         verbose_name="Intérêt des cours"
     )
 
-    semester_accepted = models.ManyToManyField('Semester', verbose_name="Semestres acceptés")
+    semester = models.CharField(max_length=30, choices=SEMESTER, blank=True, verbose_name="Semestre de mobilité")
+
     certif_languages = models.CharField(
         verbose_name="Certifications requises pour les langues",
         max_length=100, choices=LANGUAGES,
@@ -301,6 +335,7 @@ class ExchangeReview(models.Model):
     )
     financial_aid = models.ManyToManyField(
         'FinancialAid',
+        blank=True,
         verbose_name="Aides reçus lors de la mobilité"
     )
 
@@ -315,7 +350,7 @@ class ExchangeReview(models.Model):
     )
     name = models.CharField(verbose_name="Nom", max_length=100)
     surname = models.CharField(verbose_name="Prénom", max_length=100)
-    diploma_year = models.PositiveIntegerField(
+    year = models.PositiveIntegerField(
         verbose_name="Année de départ en échange",
         validators=[MinValueValidator(2000), MaxValueValidator(2050)],
     )
@@ -323,43 +358,3 @@ class ExchangeReview(models.Model):
     def __str__(self):
         return f"Review from {self.surname}"
 
-    def save(self, *args, **kwargs):
-        """
-        Update the grade fields for the university and city when saving the review
-        """
-        super(ExchangeReview, self).save(*args, **kwargs)
-
-        # Get city & university
-        city = University.objects.get(id=self.university.id).city
-        uni = University.objects.get(id=self.university.id)
-        # Get every Exchange Review which is in this uni
-        reviews_city = ExchangeReview.objects.filter(university__city=city)
-        reviews_uni = ExchangeReview.objects.filter(university=uni)
-
-        # Work out the sum of the grades for each category
-        culture = reviews_city.aggregate(models.Avg('culture'))
-        night_life = reviews_city.aggregate(models.Avg('night_life'))
-        cost_of_living = reviews_city.aggregate(models.Avg('cost_of_living'))
-        security = reviews_city.aggregate(models.Avg('security'))
-        rent = reviews_city.aggregate(models.Avg('rent'))
-
-        # Work out the average grades for university criteria
-        courses_difficulty = reviews_uni.aggregate(models.Avg('courses_difficulty'))
-        student_proximity = reviews_uni.aggregate(models.Avg('student_proximity'))
-        courses_interest = reviews_uni.aggregate(models.Avg('courses_interest'))
-
-        # Save the average values
-        city.cultural_life_average_grade = culture['culture__avg']
-        city.night_life_average_grade = night_life['night_life__avg']
-        city.cost_of_living_average_grade = cost_of_living['cost_of_living__avg']
-        city.security_average_grade = security['security__avg']
-        city.rent_average = rent['rent__avg']
-
-        uni.courses_difficulty = courses_difficulty['courses_difficulty__avg']
-        uni.courses_interest = courses_interest['courses_interest__avg']
-        uni.student_proximity = student_proximity['student_proximity__avg']
-
-
-        # Update the university object & save
-        city.save()
-        uni.save()
