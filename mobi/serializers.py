@@ -92,6 +92,7 @@ class UniversitySerializer(ModelSerializer):
     city_name = ReadOnlyField()
     country_name = ReadOnlyField()
 
+
     class Meta:
         model = University
         fields = (

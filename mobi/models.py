@@ -154,6 +154,51 @@ class University(models.Model):
     def country_name(self):
         return f"{self.city.country.name}"
 
+    def update_courses_difficulty(self):
+        """
+        Update the grade fields and the number of reviews for the university and city when saving the review
+        """
+
+        # Get every Exchange Review which is in this uni
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+
+        # Work out the average grades for university criteria
+        courses_difficulty = reviews_uni.aggregate(models.Avg('courses_difficulty'))
+
+        self.courses_difficulty = courses_difficulty['courses_difficulty__avg']
+        self.save()
+        return self.courses_difficulty
+
+    def update_courses_interest(self):
+
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+
+        # Work out the average grades for university criteria
+        courses_interest = reviews_uni.aggregate(models.Avg('courses_interest'))
+
+        self.courses_interest = courses_interest['courses_interest__avg']
+        self.save()
+        return self.courses_interest
+
+    def update_student_proximity(self):
+        # Get every Exchange Review which is in this uni
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+
+        # Work out the average grades for university criteria
+        student_proximity = reviews_uni.aggregate(models.Avg('student_proximity'))
+
+        self.student_proximity = student_proximity['student_proximity__avg']
+
+        self.save()
+        return self.student_proximity
+
+    def count(self):
+        reviews_uni = ExchangeReview.objects.filter(university=self)
+        number = reviews_uni.count()
+        return number
+
+
+
 
 class DepartementINSA(models.Model):
     """
