@@ -293,7 +293,8 @@ class ExchangeReview(models.Model):
         verbose_name="Intérêt des cours"
     )
 
-    semester_accepted = models.ManyToManyField('Semester', verbose_name="Semestres acceptés")
+    semester = models.CharField(max_length=30, choices=SEMESTER, blank=True, verbose_name="Semestre de mobilité")
+
     certif_languages = models.CharField(
         verbose_name="Certifications requises pour les langues",
         max_length=100, choices=LANGUAGES,
@@ -301,6 +302,7 @@ class ExchangeReview(models.Model):
     )
     financial_aid = models.ManyToManyField(
         'FinancialAid',
+        blank=True,
         verbose_name="Aides reçus lors de la mobilité"
     )
 
