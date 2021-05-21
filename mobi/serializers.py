@@ -4,13 +4,6 @@ from .models import *
 
 # Model serializers go here...
 
-
-class ExchangeReviewSerializer(ModelSerializer):
-    class Meta:
-        model = ExchangeReview
-        fields = '__all__'
-
-
 class CommentSerializer(ModelSerializer):
     class Meta:
         model = ExchangeReview
@@ -42,8 +35,39 @@ class FinancialAidSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class UniversityBisSerializer(ModelSerializer):
+class ExchangeReviewSerializer(ModelSerializer):
+    financial_aid = FinancialAidSerializer(many=True, read_only=True)
 
+    class Meta:
+        model = ExchangeReview
+        fields = (
+            'datetime',
+            'name',
+            'surname',
+            'contact',
+            'email',
+            'department',
+            'university',
+            'mobility_type',
+            'semester',
+            'year',
+            'culture',
+            'night_life',
+            'cost_of_living',
+            'security',
+            'courses_difficulty',
+            'courses_interest',
+            'student_proximity',
+            'univ_appartment',
+            'rent',
+            'visa',
+            'certif_languages',
+            'financial_aid',
+            'comments'
+        )
+
+
+class UniversityBisSerializer(ModelSerializer):
     class Meta:
         model = University
         fields = (
@@ -147,3 +171,9 @@ class UniversitySerializer(ModelSerializer):
             'financial_aid',
             'reviews'
         )
+
+
+
+
+
+
