@@ -84,7 +84,25 @@ class PlacesDDSerializer(ModelSerializer):
         model = PlacesDD
         fields = ('number', 'department_availability')
 
-        
+
+class UniversityShortSerializer(ModelSerializer):
+    city_name = ReadOnlyField()
+    country_name = ReadOnlyField()
+    placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
+    placesDD = PlacesDDSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = University
+        fields = (
+            'id',
+            'name',
+            'city_name',
+            'country_name',
+            'placesExchange',
+            'placesDD'
+        )
+
+
 class UniversitySerializer(ModelSerializer):
     financial_aid = FinancialAidSerializer(many=True, read_only=True)
     reviews = CommentSerializer(many=True, read_only=True)
@@ -101,8 +119,6 @@ class UniversitySerializer(ModelSerializer):
     cost_of_living = ReadOnlyField()
     security = ReadOnlyField()
     rent = ReadOnlyField()
-
-
 
     class Meta:
         model = University
@@ -131,9 +147,3 @@ class UniversitySerializer(ModelSerializer):
             'financial_aid',
             'reviews'
         )
-
-
-
-
-
-
