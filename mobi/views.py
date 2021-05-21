@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .models import *
-from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer
+from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer, UniversityShortSerializer
 
 
 @api_view(['GET'])
@@ -24,3 +24,7 @@ class UniversityViewset(viewsets.ModelViewSet):
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
 
+
+class UniversityShortViewset(viewsets.ModelViewSet):
+    queryset = University.objects.all()
+    serializer_class = UniversityShortSerializer
