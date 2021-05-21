@@ -26,12 +26,12 @@ class ReviewViewset(viewsets.ModelViewSet):
             return HttpResponse('<h1>Error 429<h1>')
 
 
-class CountryViewset(viewsets.ModelViewSet):
+class CountryViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
 
 
-class UniversityViewset(viewsets.ModelViewSet):
+class UniversityViewset(viewsets.ReadOnlyModelViewSet):
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
 
