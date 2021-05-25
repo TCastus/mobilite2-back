@@ -72,11 +72,11 @@ class University(models.Model):
     website = models.URLField(blank=True, verbose_name="Site Internet")
 
     latitude = models.DecimalField(
-        max_digits=11, decimal_places=6, null=True, blank=True,
+        max_digits=18, decimal_places=14, null=True, blank=True,
         verbose_name="Latitude"
     )
     longitude = models.DecimalField(
-        max_digits=11, decimal_places=6, null=True, blank=True,
+        max_digits=18, decimal_places=14, null=True, blank=True,
         verbose_name="Longitude"
     )
 

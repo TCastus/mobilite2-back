@@ -18,10 +18,10 @@ class Command(BaseCommand):
         mtr = City(name="Montréal", country=can)
         mtr.save()
 
-        insa = University(name="INSA", city=lyon, univ_appartment=False)
+        insa = University(name="INSA", city=lyon, univ_appartment=False, latitude=45.78262952862812, longitude=4.876626999999439)
         insa.save()
 
-        ets = University(name="ETS", city=mtr, univ_appartment=False)
+        ets = University(name="ETS", city=mtr, univ_appartment=False, latitude=45.49490192138759, longitude=-73.56226838771663)
         ets.save()
 
         s1 = Semester(name="4A-S1")
