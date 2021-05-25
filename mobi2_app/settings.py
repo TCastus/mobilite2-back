@@ -35,6 +35,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +49,6 @@ INSTALLED_APPS = [
     'mobi',  # Our app
     'hcaptcha', # Hcaptcha support
 ]
-
 
 
 MIDDLEWARE = [
