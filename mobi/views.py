@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
 from .models import *
 from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer
 
@@ -21,13 +21,6 @@ class CountryViewset(viewsets.ModelViewSet):
 
 
 class UniversityViewset(viewsets.ModelViewSet):
-    search_fields = ('name', 'city__name', 'city__country__name', )
-    ordering_filters = ('cwur_rank',
-                        'courses_interest',
-                        'courses_difficulty',
-                        'student_proximity',
-                        'name', )
-    filter_backends = (filters.SearchFilter)
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
 
