@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from .models import *
+from rest_captcha.serializers import RestCaptchaSerializer
 
 
 # Model serializers go here...
@@ -33,6 +34,10 @@ class FinancialAidSerializer(ModelSerializer):
     class Meta:
         model = FinancialAid
         fields = '__all__'
+
+
+class HumanOnlySerializer(RestCaptchaSerializer):
+    pass
 
 
 class ExchangeReviewSerializer(ModelSerializer):
