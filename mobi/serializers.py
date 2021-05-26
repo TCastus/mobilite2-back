@@ -36,10 +36,6 @@ class FinancialAidSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class HumanOnlySerializer(RestCaptchaSerializer):
-    pass
-
-
 class ExchangeReviewSerializer(ModelSerializer):
     financial_aid = FinancialAidSerializer(many=True, read_only=True)
 
