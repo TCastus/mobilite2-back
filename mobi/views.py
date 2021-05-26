@@ -3,7 +3,7 @@ import requests
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from .models import *
 from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer
 from django.http import HttpResponse
@@ -16,12 +16,12 @@ def health_check(request):
     return Response({'status': 'ok', 'message': 'ça maarche'})
 
 
-class ReviewViewset(viewsets.ModelViewSet):
+class ReviewViewset(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ExchangeReview.objects.all()
     serializer_class = ExchangeReviewSerializer
 
     def post(self, request, *args, **kwargs):
-        super(ReviewViewset, self).post()
+        super(ReviewViewset, self).create()
 
         if not validate_captcha(request.POST['h-captcha-response']):
             return HttpResponse('<h1>Error 429<h1>')
