@@ -110,6 +110,24 @@ class PlacesDDSerializer(ModelSerializer):
         fields = ('number', 'department_availability')
 
 
+class UniversityShortSerializer(ModelSerializer):
+    city_name = ReadOnlyField()
+    country_name = ReadOnlyField()
+    placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
+    placesDD = PlacesDDSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = University
+        fields = (
+            'id',
+            'name',
+            'city_name',
+            'country_name',
+            'placesExchange',
+            'placesDD'
+        )
+
+
 class UniversitySerializer(ModelSerializer):
     financial_aid = FinancialAidSerializer(many=True, read_only=True)
     reviews = CommentSerializer(many=True, read_only=True)

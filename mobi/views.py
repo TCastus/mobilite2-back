@@ -8,6 +8,7 @@ from .models import *
 from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer
 from django.http import HttpResponse
 from mobi2_app import settings
+from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer, UniversityShortSerializer
 
 
 @api_view(['GET'])
@@ -35,6 +36,28 @@ class UniversityViewset(viewsets.ReadOnlyModelViewSet):
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
 
+
+def validate_captcha(token):
+    """
+    Verifies the HCaptcha attached to the form
+    Read the docs for more information : https://docs.hcaptcha.com/
+
+    :param token: token provided by the form
+    :return: True if HCaptcha validates the captcha
+    """
+
+    params = {
+        "secret": settings.HCAPTCHA_PRIVATE_KEY,
+        "response": token
+    }
+
+    captcha_result = requests.post("https://hcaptcha.com/siteverify", params)
+    return captcha_result.json()['success']
+
+
+class UniversityShortViewset(viewsets.ReadOnlyModelViewSet):
+    queryset = University.objects.all()
+    serializer_class = UniversityShortSerializer
 
 def validate_captcha(token):
     """
