@@ -13,5 +13,4 @@ router.register(r'university', UniversityViewset)
 urlpatterns = [
     path('', include(router.urls)),
     path('check', health_check, name="healthcheck"),
-    path(r'captcha', include('rest_captcha.urls')),
 ]
