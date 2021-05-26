@@ -1,6 +1,5 @@
 from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from .models import *
-from rest_captcha.serializers import RestCaptchaSerializer
 
 
 # Model serializers go here...

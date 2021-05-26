@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'drf_yasg',  # Swagger web interface for endpoints
     'debug_toolbar',  # Django debug toolbar
     'mobi',  # Our app
-    'hcaptcha', # Hcaptcha support
 ]
 
 
