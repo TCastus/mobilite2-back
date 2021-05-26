@@ -58,3 +58,20 @@ def validate_captcha(token):
 class UniversityShortViewset(viewsets.ReadOnlyModelViewSet):
     queryset = University.objects.all()
     serializer_class = UniversityShortSerializer
+
+def validate_captcha(token):
+    """
+    Verifies the HCaptcha attached to the form
+    Read the docs for more information : https://docs.hcaptcha.com/
+
+    :param token: token provided by the form
+    :return: True if HCaptcha validates the captcha
+    """
+
+    params = {
+        "secret": settings.HCAPTCHA_PRIVATE_KEY,
+        "response": token
+    }
+
+    captcha_result = requests.post("https://hcaptcha.com/siteverify", params)
+    return captcha_result.json()['success']

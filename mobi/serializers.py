@@ -176,9 +176,3 @@ class UniversitySerializer(ModelSerializer):
             'financial_aid',
             'reviews'
         )
-
-
-
-
-
-
