@@ -55,6 +55,6 @@ def validate_captcha(token):
     return captcha_result.json()['success']
 
 
-class UniversityShortViewset(viewsets.ModelViewSet):
+class UniversityShortViewset(viewsets.ReadOnlyModelViewSet):
     queryset = University.objects.all()
     serializer_class = UniversityShortSerializer
