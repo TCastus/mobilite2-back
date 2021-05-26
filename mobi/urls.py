@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from .views import health_check, ReviewViewset, CountryViewset, UniversityViewset, UniversityShortViewset
+import cas.views
 
 # Register models to the REST router
 router = routers.DefaultRouter()
@@ -13,5 +14,7 @@ router.register(r'university_short', UniversityShortViewset)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('check', health_check, name="healthcheck")
+    path('check', health_check, name="healthcheck"),
+    path(r'login', cas.views.login, name='login'),
+    path(r'logout', cas.views.logout, name='logout')
 ]

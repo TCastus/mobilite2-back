@@ -35,6 +35,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # Application definition
 
 INSTALLED_APPS = [
+    'cas',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,8 +59,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug toolbar
-    'corsheaders.middleware.CorsMiddleware'  # CORS Stuff
+    'corsheaders.middleware.CorsMiddleware',  # CORS Stuff
+    'cas.middleware.CASMiddleware'  # CAS Stuff
 ]
+
+CAS_SERVER_URL = "https://login.insa-lyon.fr/cas/"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
