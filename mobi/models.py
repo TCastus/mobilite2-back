@@ -50,6 +50,23 @@ class City(models.Model):
         verbose_name="Nombre d'habitants"
     )
 
+    night_life_average_grade = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True,
+        verbose_name="Note sur la vie nocturne"
+    )
+    cultural_life_average_grade = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True,
+        verbose_name="Note sur la vie culturelle"
+    )
+    cost_of_living_average_grade = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True,
+        verbose_name="Note sur le coût de la vie"
+    )
+    security_average_grade = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True,
+        verbose_name="Note de sécurité"
+    )
+
     def __str__(self):
         return f"{self.name} in {self.country}"
 
@@ -94,6 +111,23 @@ class University(models.Model):
     univ_appartment = models.BooleanField(
         null=True, blank=True,
         verbose_name="Présence d'appartements sur le campus"
+    )
+
+    courses_difficulty = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True,
+        verbose_name="Note sur la difficulté des cours"
+    )
+    courses_interest = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True,
+        verbose_name="Note sur l'intérêt des cours"
+    )
+    student_proximity = models.DecimalField(
+        max_digits=2, decimal_places=1, default=0, null=True,
+        verbose_name="Note sur la proximité sociale des étudiants"
+    )
+    rent_average = models.IntegerField(
+        default=0, null=True,
+        verbose_name="Loyer moyen"
     )
 
     financial_aid = models.ManyToManyField(

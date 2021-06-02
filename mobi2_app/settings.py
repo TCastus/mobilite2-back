@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'mobi',  # Our app
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -132,8 +131,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # HCAPTCHA INFO
 HCAPTCHA_PRIVATE_KEY = 0x0000000000000000000000000000000000000000
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

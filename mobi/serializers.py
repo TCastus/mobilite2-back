@@ -163,6 +163,7 @@ class UniversitySerializer(ModelSerializer):
             'courses_difficulty',
             'courses_interest',
             'student_proximity',
+            'rent_average',
             'culture',
             'night_life',
             'cost_of_living',
