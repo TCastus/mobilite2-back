@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer, UniversityShortSerializer
 
@@ -13,6 +14,7 @@ def health_check(request):
 class ReviewViewset(viewsets.ModelViewSet):
     queryset = ExchangeReview.objects.all()
     serializer_class = ExchangeReviewSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class CountryViewset(viewsets.ModelViewSet):

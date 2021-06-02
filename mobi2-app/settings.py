@@ -65,6 +65,8 @@ MIDDLEWARE = [
 
 CAS_SERVER_URL = "https://login.insa-lyon.fr/cas/"
 
+LOGIN_URL = r'login'
+
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
   'http://localhost:8000',
@@ -76,12 +78,17 @@ INTERNAL_IPS = [
     'localhost'
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'cas.backends.CASBackend',
+)
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'  # Shall be modified someday
-    ]
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',# Shall be modified someday
+    )
 }
 
 ROOT_URLCONF = 'mobi2-app.urls'
