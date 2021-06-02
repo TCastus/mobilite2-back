@@ -6,7 +6,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins
 from .models import *
-from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer
 from django.http import HttpResponse
 from mobi2_app import settings
 from .serializers import ExchangeReviewSerializer, CountrySerializer, UniversitySerializer, UniversityShortSerializer
@@ -17,12 +16,10 @@ def health_check(request):
     return Response({'status': 'ok', 'message': 'ça maarche'})
 
 
-
-
-
 @api_view(['GET'])
 def homepage(request):
     return render(request, 'homepage.html')
+
 
 class ReviewViewset(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ExchangeReview.objects.all()
@@ -43,6 +40,8 @@ class CountryViewset(viewsets.ReadOnlyModelViewSet):
 class UniversityViewset(viewsets.ReadOnlyModelViewSet):
     queryset = University.objects.all()
     serializer_class = UniversitySerializer
+
+
 @api_view(['POST'])
 def search(request):
     if request.method == 'POST':
@@ -88,6 +87,7 @@ def search(request):
 class UniversityShortViewset(viewsets.ReadOnlyModelViewSet):
     queryset = University.objects.all()
     serializer_class = UniversityShortSerializer
+
 
 def validate_captcha(token):
     """
