@@ -1,1 +1,1 @@
-web: gunicorn mobi2-app.wsgi --log-file -
+web: gunicorn mobi2_app.wsgi --log-file -
