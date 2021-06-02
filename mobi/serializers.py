@@ -18,7 +18,9 @@ class CommentSerializer(ModelSerializer):
             'comments',
             'name',
             'surname',
-            'diploma_year',
+            'year',
+            'semester',
+            'datetime',
         )
 
 
@@ -83,14 +85,11 @@ class PlacesDDSerializer(ModelSerializer):
         fields = ('number', 'department_availability')
 
 
-class UniversitySerializer(ModelSerializer):
-    department_availability = DepartementSerializer(many=True, read_only=True)
-    financial_aid = FinancialAidSerializer(many=True, read_only=True)
-    reviews = CommentSerializer(many=True, read_only=True)
-    placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
-    placesDD = PlacesDDSerializer(many=True, read_only=True)
+class UniversityShortSerializer(ModelSerializer):
     city_name = ReadOnlyField()
     country_name = ReadOnlyField()
+    placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
+    placesDD = PlacesDDSerializer(many=True, read_only=True)
 
     class Meta:
         model = University
@@ -99,7 +98,35 @@ class UniversitySerializer(ModelSerializer):
             'name',
             'city_name',
             'country_name',
-            'department_availability',
+            'placesExchange',
+            'placesDD'
+        )
+
+
+class UniversitySerializer(ModelSerializer):
+    financial_aid = FinancialAidSerializer(many=True, read_only=True)
+    reviews = CommentSerializer(many=True, read_only=True)
+    placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
+    placesDD = PlacesDDSerializer(many=True, read_only=True)
+    city_name = ReadOnlyField()
+    country_name = ReadOnlyField()
+    courses_difficulty = ReadOnlyField()
+    courses_interest = ReadOnlyField()
+    student_proximity = ReadOnlyField()
+    review_number = ReadOnlyField()
+    culture = ReadOnlyField()
+    night_life = ReadOnlyField()
+    cost_of_living = ReadOnlyField()
+    security = ReadOnlyField()
+    rent = ReadOnlyField()
+
+    class Meta:
+        model = University
+        fields = (
+            'id',
+            'name',
+            'city_name',
+            'country_name',
             'cwur_rank',
             'latitude',
             'longitude',
@@ -108,14 +135,16 @@ class UniversitySerializer(ModelSerializer):
             'placesExchange',
             'placesDD',
             'univ_appartment',
+            'review_number',
             'courses_difficulty',
             'courses_interest',
             'student_proximity',
             'rent_average',
+            'culture',
+            'night_life',
+            'cost_of_living',
+            'security',
+            'rent',
             'financial_aid',
             'reviews'
         )
-
-
-
-

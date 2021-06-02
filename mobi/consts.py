@@ -8,7 +8,8 @@ CONTINENTS = (
 )
 
 DEPARTEMENTINSA = (
-    ("BS", "Biosciences"),
+    ("BB", "Biosciences Biochimie et Biotechnologie"),
+    ("BIM", "Bioinformatique et Modélisation"),
     ("GCU", "Génie Civil et Urbanisme"),
     ("GE", "Génie Electrique"),
     ("GEN", "Génie Energétique et Environnement"),
@@ -42,7 +43,9 @@ SEMESTER = (
     ('4A-S1', '4A-S1'),
     ('4A-S2', '4A-S2'),
     ('5A-S1', '5A-S1'),
-    ('5A-S2', '5A-S2')
+    ('5A-S2', '5A-S2'),
+    ('4A', '4A'),
+    ('5A', '5A')
 )
 
 LANGUAGES = (

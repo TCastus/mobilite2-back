@@ -114,7 +114,7 @@ class Migration(migrations.Migration):
                 ('department', models.CharField(choices=[('BS', 'Biosciences'), ('GCU', 'Génie Civil et Urbanisme'), ('GE', 'Génie Electrique'), ('GEN', 'Génie Energétique et Environnement'), ('GI', 'Génie Industriel'), ('GM', 'Génie Mécanique'), ('IF', 'Informatique'), ('SGM', 'Science et Génie Matériaux'), ('TC', 'Télécommunications, Services et Usages')], default='TC', max_length=30, verbose_name='Département INSA')),
                 ('name', models.CharField(max_length=100, verbose_name='Nom')),
                 ('surname', models.CharField(max_length=100, verbose_name='Prénom')),
-                ('diploma_year', models.PositiveIntegerField(validators=[django.core.validators.MinValueValidator(2000), django.core.validators.MaxValueValidator(2050)], verbose_name='Année de départ en échange')),
+                ('year', models.PositiveIntegerField(validators=[django.core.validators.MinValueValidator(2000), django.core.validators.MaxValueValidator(2050)], verbose_name='Année de départ en échange')),
                 ('financial_aid', models.ManyToManyField(to='mobi.FinancialAid', verbose_name='Aides reçus lors de la mobilité')),
                 ('semester_accepted', models.ManyToManyField(to='mobi.Semester', verbose_name='Semestres acceptés')),
                 ('university', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='mobi.university', verbose_name='Université concernée')),
