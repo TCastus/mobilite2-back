@@ -132,6 +132,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# HCAPTCHA INFO
+HCAPTCHA_PRIVATE_KEY = os.environ.get("HCAPTACHA_PRIVATE_KEY", '0x0000000000000000000000000000000000000000')
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 

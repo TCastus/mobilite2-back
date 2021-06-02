@@ -18,10 +18,10 @@ class Command(BaseCommand):
         mtr = City(name="Montréal", country=can)
         mtr.save()
 
-        insa = University(name="INSA", city=lyon, univ_appartment=False)
+        insa = University(name="INSA", city=lyon, univ_appartment=False, latitude=45.78262952862812, longitude=4.876626999999439)
         insa.save()
 
-        ets = University(name="ETS", city=mtr, univ_appartment=False)
+        ets = University(name="ETS", city=mtr, univ_appartment=False, latitude=45.49490192138759, longitude=-73.56226838771663)
         ets.save()
 
         s1 = Semester(name="4A-S1")
@@ -55,18 +55,18 @@ class Command(BaseCommand):
 
         review = ExchangeReview(
             university=insa,
-            culture=5,
-            night_life=5,
-            cost_of_living=5,
-            security=5,
+            culture=5.0,
+            night_life=5.0,
+            cost_of_living=5.0,
+            security=5.0,
             mobility_type='E',
             univ_appartment=False,
             rent=750,
             comments="Bonjour c moi c le test",
             visa=False,
-            courses_difficulty=2,
-            courses_interest=5,
-            student_proximity=5,
+            courses_difficulty=2.0,
+            courses_interest=5.0,
+            student_proximity=5.0,
             certif_languages='AUCUN',
             semester="4A",
             contact=True,

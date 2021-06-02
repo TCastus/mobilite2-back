@@ -89,11 +89,11 @@ class University(models.Model):
     website = models.URLField(blank=True, verbose_name="Site Internet")
 
     latitude = models.DecimalField(
-        max_digits=11, decimal_places=6, null=True, blank=True,
+        max_digits=18, decimal_places=14, null=True, blank=True,
         verbose_name="Latitude"
     )
     longitude = models.DecimalField(
-        max_digits=11, decimal_places=6, null=True, blank=True,
+        max_digits=18, decimal_places=14, null=True, blank=True,
         verbose_name="Longitude"
     )
 
@@ -347,16 +347,19 @@ class ExchangeReview(models.Model):
     comments = models.TextField(blank=True, null=True, verbose_name="Commentaires")
 
     visa = models.BooleanField()
-    courses_difficulty = models.PositiveIntegerField(
-        validators=[MaxValueValidator(5)],
+    courses_difficulty = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
         verbose_name="Difficulté des cours"
     )
-    student_proximity = models.PositiveIntegerField(
-        validators=[MaxValueValidator(5)],
+    student_proximity = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
         verbose_name="Proximité sociale avec les étudiants"
     )
-    courses_interest = models.PositiveIntegerField(
-        validators=[MaxValueValidator(5)],
+    courses_interest = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
         verbose_name="Intérêt des cours"
     )
 
@@ -386,7 +389,7 @@ class ExchangeReview(models.Model):
     surname = models.CharField(verbose_name="Prénom", max_length=100)
     year = models.PositiveIntegerField(
         verbose_name="Année de départ en échange",
-        validators=[MinValueValidator(2000), MaxValueValidator(2050)],
+        validators=[MinValueValidator(2000), MaxValueValidator(2100)],
     )
 
     def __str__(self):
