@@ -190,6 +190,18 @@ class University(models.Model):
         rent = reviews_city.aggregate(models.Avg('rent'))
         return rent
 
+    def department(self):
+        placesE = PlacesExchange.objects.filter(university__id=self.id)
+        placesDD = PlacesDD.objects.filter(university__id=self.id)
+        outputSet = set()
+
+        for place in placesE:
+            outputSet.update([dep.name for dep in place.department_availability.all()])
+        for place in placesDD:
+            outputSet.update([dep.name for dep in place.department_availability.all()])
+
+        return outputSet
+
 
 
 

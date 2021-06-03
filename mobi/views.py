@@ -45,13 +45,12 @@ class UniversityViewset(viewsets.ReadOnlyModelViewSet):
 @api_view(['POST'])
 def search(request):
     if request.method == 'POST':
-
         queryset = University.objects.all()
 
         if 'name' in request.data:
             uni_name = request.data['name']
             queryset = queryset.filter(name__icontains=uni_name)
-        if 'access' in request.data:
+        if 'access' in request.data and request.data['access']:
             uni_access = request.data['access']
             queryset = queryset.filter(access=uni_access)
         if 'country' in request.data:
@@ -60,21 +59,22 @@ def search(request):
         if 'nightlife_min' in request.data:
             uni_nightlife_min = request.data['nightlife_min']
             queryset = queryset.filter(city__night_life_average_grade__gte=uni_nightlife_min)
-        if 'courses_diff' in request.data:
-            uni_courses_diff = request.data['courses_difficulty']
-            queryset = queryset.filter(courses_difficulty__lte=uni_courses_diff)
-        if 'cultural_min' in request.data:
-            uni_cultural_min = request.data['cultural_min']
+        # if 'course_difficulty' in request.data:
+        #     uni_courses_diff = request.data['course_difficulty']
+        #     queryset = queryset.filter(courses_difficulty__lte=uni_courses_diff)
+        if 'uni_cultural_min' in request.data:
+            uni_cultural_min = request.data['uni_cultural_min']
             queryset = queryset.filter(city__cultural_life_average_grade__gte=uni_cultural_min)
         if 'outside_europe' in request.data:
             uni_outside_europe = request.data['outside_europe']
-            if uni_outside_europe == 'True':
+            if uni_outside_europe == 'true':
                 queryset = queryset.exclude(city__country__continent="Europe")
-            else:
+            elif uni_outside_europe == 'false':
                 queryset = queryset.filter(city__country__continent="Europe")
-        if 'department_availability' in request.data:
-            uni_department_availability = request.data['department_availability']
-            queryset = queryset.filter(department_availability__iexact=uni_department_availability)
+        if 'department_availability' in request.data and request.data['department_availability'] != 'all':
+            dep = request.data['department_availability']
+            id_dep_available = [university.id for university in University.objects.all() if dep in university.department()]
+            queryset = queryset.filter(id__in=id_dep_available)
         if 'cost_living_grade_min' in request.data:
             uni_cost_living_grade_min = request.data['cost_living_grade_min']
             queryset = queryset.filter(city__cost_of_living_average_grade__gte=uni_cost_living_grade_min)
