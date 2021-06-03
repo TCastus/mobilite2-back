@@ -113,23 +113,6 @@ class University(models.Model):
         verbose_name="Présence d'appartements sur le campus"
     )
 
-    courses_difficulty = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la difficulté des cours"
-    )
-    courses_interest = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur l'intérêt des cours"
-    )
-    student_proximity = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la proximité sociale des étudiants"
-    )
-    rent_average = models.IntegerField(
-        default=0, null=True,
-        verbose_name="Loyer moyen"
-    )
-
     financial_aid = models.ManyToManyField(
         'FinancialAid',
         related_name="financial_aid",
