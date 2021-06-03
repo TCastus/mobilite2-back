@@ -58,13 +58,16 @@ def search(request):
             queryset = queryset.filter(city__country__name__icontains=uni_country)
         if 'nightlife_min' in request.data:
             uni_nightlife_min = request.data['nightlife_min']
-            queryset = queryset.filter(city__night_life_average_grade__gte=uni_nightlife_min)
-        # if 'course_difficulty' in request.data:
-        #     uni_courses_diff = request.data['course_difficulty']
-        #     queryset = queryset.filter(courses_difficulty__lte=uni_courses_diff)
+            id_univ = [university.id for university in University.objects.all() if university.night_life()['nigh_life__avg'] > uni_nightlife_min]
+            queryset = queryset.filter(id_in=id_univ)
+        if 'course_difficulty' in request.data:
+            uni_courses_diff = request.data['course_difficulty']
+            id_univ = [university.id for university in University.objects.all() if university.courses_difficulty()['courses_difficulty__avg'] > uni_courses_diff]
+            queryset = queryset.filter(id_in=id_univ)
         if 'uni_cultural_min' in request.data:
             uni_cultural_min = request.data['uni_cultural_min']
-            queryset = queryset.filter(city__cultural_life_average_grade__gte=uni_cultural_min)
+            id_univ = [university.id for university in University.objects.all() if university.culture()['culture__avg'] > uni_cultural_min]
+            queryset = queryset.filter(id_in=id_univ)
         if 'outside_europe' in request.data:
             uni_outside_europe = request.data['outside_europe']
             if uni_outside_europe == 'true':
@@ -77,7 +80,9 @@ def search(request):
             queryset = queryset.filter(id__in=id_dep_available)
         if 'cost_living_grade_min' in request.data:
             uni_cost_living_grade_min = request.data['cost_living_grade_min']
-            queryset = queryset.filter(city__cost_of_living_average_grade__gte=uni_cost_living_grade_min)
+            id_univ = [university.id for university in University.objects.all() if university.cost_of_living()['cost_of_living__avg'] > uni_cost_living_grade_min]
+            queryset = queryset.filter(id_in=id_univ)
+
 
         serializer = UniversitySerializer(queryset, many=True)
 
