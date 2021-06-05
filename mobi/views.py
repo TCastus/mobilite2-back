@@ -26,10 +26,9 @@ class ReviewViewset(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Retri
     serializer_class = ExchangeReviewSerializer
 
     def post(self, request, *args, **kwargs):
-        super(ReviewViewset, self).create()
-
         if not validate_captcha(request.POST['h-captcha-response']):
-            return HttpResponse('<h1>Error 429<h1>')
+            return HttpResponse(status=401)
+        super(ReviewViewset, self).create(request, *args, **kwargs)
 
 
 class CountryViewset(viewsets.ReadOnlyModelViewSet):
@@ -45,6 +44,7 @@ class UniversityViewset(viewsets.ReadOnlyModelViewSet):
 @api_view(['POST'])
 def search(request):
     if request.method == 'POST':
+        print(request.data)
         queryset = University.objects.all()
 
         if 'name' in request.data:

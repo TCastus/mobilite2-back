@@ -324,6 +324,7 @@ class ExchangeReview(models.Model):
     """
     A exchange review posted by a student
     """
+
     datetime = models.DateField(verbose_name="Jour de publication", auto_now_add=True)
 
     university = models.ForeignKey(
@@ -332,48 +333,66 @@ class ExchangeReview(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Université concernée")
 
-    culture = models.PositiveIntegerField(
-        validators=[MaxValueValidator(5)],
-        verbose_name="Note sur la vie culturelle"
-    )
-    night_life = models.PositiveIntegerField(
-        validators=[MaxValueValidator(5)],
-        verbose_name="Note sur la vie nocturne"
-    )
-    cost_of_living = models.PositiveIntegerField(
-        validators=[MaxValueValidator(5)],
-        verbose_name="Note sur le coût de la vie"
-    )
-    security = models.PositiveIntegerField(
-        validators=[MaxValueValidator(5)],
-        verbose_name="Note de sécurité"
-    )
-    mobility_type = models.CharField(
-        max_length=100, choices=MOBITYPE, default='E',
-        verbose_name="Type de mobilité"
+    culture = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        verbose_name="Note sur la vie culturelle",
+        default=0
     )
 
-    univ_appartment = models.BooleanField(verbose_name="Présence d'appartements sur le campus")
+    night_life = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        verbose_name="Note sur la vie nocturne",
+        default=0
+    )
+
+    cost_of_living = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        verbose_name="Note sur le coût de la vie",
+        default=0
+    )
+
+    security = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        verbose_name="Note de sécurité",
+        default=0
+    )
+
+    courses_difficulty = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        verbose_name="Difficulté des cours",
+        default=0
+    )
+
+    student_proximity = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        verbose_name="Proximité sociale avec les étudiants",
+        default=0
+    )
+
+    courses_interest = models.DecimalField(
+        max_digits=2, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        verbose_name="Intérêt par rapport aux cours",
+        default=0
+    )
+
+    mobility_type = models.CharField(
+        max_length=100, choices=MOBITYPE, default='E',
+        verbose_name="Type de mobilité",
+    )
+
+    univ_appartment = models.BooleanField(verbose_name="Appartements disponibles sur le campus")
     rent = models.IntegerField(blank=True, null=True, verbose_name="Approximation du loyer")
 
     comments = models.TextField(blank=True, null=True, verbose_name="Commentaires")
 
-    visa = models.BooleanField()
-    courses_difficulty = models.DecimalField(
-        max_digits=2, decimal_places=1,
-        validators=[MinValueValidator(0), MaxValueValidator(5)],
-        verbose_name="Difficulté des cours"
-    )
-    student_proximity = models.DecimalField(
-        max_digits=2, decimal_places=1,
-        validators=[MinValueValidator(0), MaxValueValidator(5)],
-        verbose_name="Proximité sociale avec les étudiants"
-    )
-    courses_interest = models.DecimalField(
-        max_digits=2, decimal_places=1,
-        validators=[MinValueValidator(0), MaxValueValidator(5)],
-        verbose_name="Intérêt des cours"
-    )
+    visa = models.TextField(blank=True, null=True, verbose_name="Obtention du visa")
 
     semester = models.CharField(max_length=30, choices=SEMESTER, blank=True, verbose_name="Semestre de mobilité")
 
@@ -388,7 +407,6 @@ class ExchangeReview(models.Model):
         verbose_name="Aides reçus lors de la mobilité"
     )
 
-    # Contact of the writer
     contact = models.BooleanField(verbose_name="Autorisation d'affichage du contact")
     email = models.EmailField(verbose_name="Adresse email")
     department = models.CharField(
@@ -397,6 +415,7 @@ class ExchangeReview(models.Model):
         choices=DEPARTEMENTINSA,
         default="TC"
     )
+
     name = models.CharField(verbose_name="Nom", max_length=100)
     surname = models.CharField(verbose_name="Prénom", max_length=100)
     year = models.PositiveIntegerField(
