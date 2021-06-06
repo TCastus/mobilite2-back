@@ -3,16 +3,6 @@ from django.core.validators import *
 from .consts import *
 
 
-# TODO: Implement the model and use it
-# class NoteField(models.PositiveIntegerField):
-#     """
-#     Custom field for a grade between 0 and 5
-#     """
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(validators=[MaxValueValidator(5)], *args, **kwargs)
-
-
 class Country(models.Model):
     """
     Database model describing a country available for an exchange
