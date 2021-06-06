@@ -1,3 +1,4 @@
+antiorm==1.2.1
 asgiref==3.3.4
 certifi==2020.12.5
 chardet==4.0.0
@@ -9,9 +10,11 @@ django-cors-headers==3.7.0
 django-debug-toolbar==3.2.1
 django-dotenv==1.4.2
 django-filter==2.4.0
+django-import-export==2.5.0
 django-rest-swagger==2.2.0
 djangorestframework==3.12.4
 drf-yasg==1.20.0
+geopy==2.1.0
 gunicorn==20.1.0
 idna==2.10
 inflection==0.5.1
@@ -32,6 +35,4 @@ sqlparse==0.4.1
 uritemplate==3.0.1
 urllib3==1.26.4
 whitenoise==5.2.0
-
-xlrd~=2.0.1
-geopy~=2.1.0
+xlrd==2.0.1
