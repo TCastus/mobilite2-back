@@ -381,6 +381,8 @@ class ExchangeReview(models.Model):
         verbose_name="Type de mobilité",
     )
 
+    def email_perm(self):
+        return self.email if self.contact else ''
 
     univ_appartment = models.BooleanField(verbose_name="Appartements disponibles sur le campus")
     rent = models.IntegerField(blank=True, null=True, verbose_name="Approximation du loyer")

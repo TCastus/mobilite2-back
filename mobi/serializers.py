@@ -5,6 +5,7 @@ from .models import *
 # Model serializers go here...
 
 class CommentSerializer(ModelSerializer):
+    email_perm = ReadOnlyField()
     class Meta:
         model = ExchangeReview
         fields = (
@@ -13,7 +14,10 @@ class CommentSerializer(ModelSerializer):
             'surname',
             'year',
             'semester',
-            'datetime',
+            'email_perm',
+            'mobility_type',
+            'univ_appartment',
+            'visa'
         )
 
 
@@ -112,8 +116,6 @@ class PlacesDDSerializer(ModelSerializer):
 class UniversityShortSerializer(ModelSerializer):
     city_name = ReadOnlyField()
     country_name = ReadOnlyField()
-    placesExchange = PlacesExchangeSerializer(many=True, read_only=True)
-    placesDD = PlacesDDSerializer(many=True, read_only=True)
 
     class Meta:
         model = University
@@ -122,8 +124,8 @@ class UniversityShortSerializer(ModelSerializer):
             'name',
             'city_name',
             'country_name',
-            'placesExchange',
-            'placesDD'
+            'latitude',
+            'longitude'
         )
 
 
