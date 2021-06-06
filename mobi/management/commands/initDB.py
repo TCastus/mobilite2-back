@@ -70,10 +70,10 @@ class Command(BaseCommand):
             certif_languages='AUCUN',
             semester="4A",
             contact=True,
-            email="eric.maurincomme@insa-lyon.fr",
+            email="toto@exemple.fr",
             department="TC",
-            name="Maurincomme",
-            surname="Eric",
+            name="TOTO",
+            surname="Thomas",
             year=2020,
         )
         review.save()
