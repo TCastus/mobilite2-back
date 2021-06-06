@@ -86,7 +86,7 @@ def search(request):
 
         serializer = UniversitySerializer(queryset, many=True)
         print(len(queryset))
-        print(serializer.data)
+        # print(serializer.data)
         return Response(serializer.data)
 
 

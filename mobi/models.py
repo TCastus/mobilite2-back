@@ -120,16 +120,26 @@ class University(models.Model):
 
     def courses_difficulty(self):
         reviews_uni = ExchangeReview.objects.filter(university=self)
+        if len(reviews_uni) == 0:
+            return {'courses_difficulty__avg':0}
         courses_difficulty = reviews_uni.aggregate(models.Avg('courses_difficulty'))
+
+        if not courses_difficulty:
+            return 0
+
         return courses_difficulty
 
     def courses_interest(self):
         reviews_uni = ExchangeReview.objects.filter(university=self)
+        if len(reviews_uni) == 0:
+            return 0
         courses_interest = reviews_uni.aggregate(models.Avg('courses_interest'))
         return courses_interest
 
     def student_proximity(self):
         reviews_uni = ExchangeReview.objects.filter(university=self)
+        if len(reviews_uni) == 0:
+            return 0
         student_proximity = reviews_uni.aggregate(models.Avg('student_proximity'))
         return student_proximity
 
@@ -140,26 +150,36 @@ class University(models.Model):
 
     def culture(self):
         reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        if len(reviews_city) == 0:
+            return {'culture__avg':0}
         culture = reviews_city.aggregate(models.Avg('culture'))
         return culture
 
     def night_life(self):
         reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        if len(reviews_city) == 0:
+            return {'night_life__avg': 0}
         night_life = reviews_city.aggregate(models.Avg('night_life'))
         return night_life
 
     def cost_of_living(self):
         reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        if len(reviews_city) == 0:
+            return {'cost_of_living__avg': 0}
         cost_of_living = reviews_city.aggregate(models.Avg('cost_of_living'))
         return cost_of_living
 
     def security(self):
         reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        if len(reviews_city) == 0:
+            return 0
         security = reviews_city.aggregate(models.Avg('security'))
         return security
 
     def rent(self):
         reviews_city = ExchangeReview.objects.filter(university__city=self.city)
+        if len(reviews_city) == 0:
+            return 0
         rent = reviews_city.aggregate(models.Avg('rent'))
         return rent
 
