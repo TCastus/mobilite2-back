@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',  # Django REST framework
     'drf_yasg',  # Swagger web interface for endpoints
     'debug_toolbar',  # Django debug toolbar
+    'import_export',  # Django admin import/export data management
     'mobi',  # Our app
 ]
 

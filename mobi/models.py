@@ -3,16 +3,6 @@ from django.core.validators import *
 from .consts import *
 
 
-# TODO: Implement the model and use it
-# class NoteField(models.PositiveIntegerField):
-#     """
-#     Custom field for a grade between 0 and 5
-#     """
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(validators=[MaxValueValidator(5)], *args, **kwargs)
-
-
 class Country(models.Model):
     """
     Database model describing a country available for an exchange
@@ -111,23 +101,6 @@ class University(models.Model):
     univ_appartment = models.BooleanField(
         null=True, blank=True,
         verbose_name="Présence d'appartements sur le campus"
-    )
-
-    courses_difficulty = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la difficulté des cours"
-    )
-    courses_interest = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur l'intérêt des cours"
-    )
-    student_proximity = models.DecimalField(
-        max_digits=2, decimal_places=1, default=0, null=True,
-        verbose_name="Note sur la proximité sociale des étudiants"
-    )
-    rent_average = models.IntegerField(
-        default=0, null=True,
-        verbose_name="Loyer moyen"
     )
 
     financial_aid = models.ManyToManyField(
@@ -380,12 +353,14 @@ class ExchangeReview(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(5)],
         verbose_name="Intérêt par rapport aux cours",
         default=0
+
     )
 
     mobility_type = models.CharField(
         max_length=100, choices=MOBITYPE, default='E',
         verbose_name="Type de mobilité",
     )
+
 
     univ_appartment = models.BooleanField(verbose_name="Appartements disponibles sur le campus")
     rent = models.IntegerField(blank=True, null=True, verbose_name="Approximation du loyer")
